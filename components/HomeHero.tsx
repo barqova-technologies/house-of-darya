@@ -1,0 +1,108 @@
+"use client";
+
+import Image from "next/image";
+import Link from "next/link";
+import { motion } from "framer-motion";
+import { images } from "@/lib/images";
+
+const ease = [0.21, 0.6, 0.35, 1] as const;
+
+export function HomeHero() {
+  return (
+    <section className="relative min-h-svh overflow-hidden">
+      <motion.div
+        initial={{ opacity: 0, scale: 1.06 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 1.8, ease }}
+        className="absolute inset-0"
+      >
+        <Image
+          src={images.heroPrimary}
+          alt="Made-to-order House of Darya rings, worn"
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover object-[70%_center]"
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-canvas via-canvas/72 to-canvas/15" />
+        <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-canvas to-transparent" />
+      </motion.div>
+
+      <div className="shell relative z-10 flex min-h-svh flex-col justify-center pb-24 pt-32">
+        <div className="max-w-xl">
+          <motion.p
+            initial={{ opacity: 0, y: 18 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.1, ease }}
+            className="label text-gold"
+          >
+            Made-to-Order Fine Jewellery · Lucknow
+          </motion.p>
+          <motion.h1
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 0.25, ease }}
+            className="display mt-6 text-[2.6rem] leading-[1.08] text-ink sm:text-6xl lg:text-[4.2rem]"
+          >
+            Jewellery that begins <em className="font-display italic text-gold">with you</em>
+          </motion.h1>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.9, delay: 0.45, ease }}
+            className="mt-7 max-w-md text-[0.97rem] leading-7 text-mist"
+          >
+            Every House of Darya piece is 100% made-to-order: rings, ceremonial bands and
+            solitaire studs in every metal, designed in conversation with you. Try over 9,000
+            designs at home with our Home Atelier.
+          </motion.p>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.9, delay: 0.6, ease }}
+            className="mt-10 flex flex-col gap-4 sm:flex-row"
+          >
+            <Link href="/home-atelier" className="btn-gold">
+              Book Home Atelier
+            </Link>
+            <Link href="/collections" className="btn-line bg-canvas/40 backdrop-blur-sm">
+              Explore Collections
+            </Link>
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1, delay: 0.85 }}
+            className="mt-12 flex flex-wrap gap-x-7 gap-y-2"
+          >
+            {["HUID Hallmarked", "IGI Certified Diamonds", "SGL Certified Gemstones"].map((mark) => (
+              <span key={mark} className="text-[0.62rem] uppercase tracking-[0.22em] text-mist">
+                {mark}
+              </span>
+            ))}
+          </motion.div>
+        </div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, delay: 1, ease }}
+          className="absolute bottom-16 right-12 hidden w-52 overflow-hidden border border-line/60 lg:block xl:w-60"
+        >
+          <div className="relative aspect-square">
+            <Image
+              src={images.heroDetail}
+              alt="Detail of a hand-set House of Darya solitaire"
+              fill
+              sizes="240px"
+              className="object-cover"
+            />
+          </div>
+          <p className="bg-card px-4 py-3 text-[0.58rem] uppercase tracking-[0.2em] text-mist">
+            The Ava · hand-set pavé
+          </p>
+        </motion.div>
+      </div>
+    </section>
+  );
+}

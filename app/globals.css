@@ -1,0 +1,82 @@
+@import "tailwindcss";
+
+:root {
+  --canvas: #131009;
+  --card: #1b1610;
+  --veil: #221c14;
+  --ink: #ece4d6;
+  --mist: #a89a86;
+  --line: #332b1f;
+  --gold: #c2a06a;
+  --gold-soft: #d8bc8a;
+  --gold-deep: #a8854e;
+  --night: #0d0a06;
+}
+
+@theme inline {
+  --color-canvas: var(--canvas);
+  --color-card: var(--card);
+  --color-veil: var(--veil);
+  --color-ink: var(--ink);
+  --color-mist: var(--mist);
+  --color-line: var(--line);
+  --color-gold: var(--gold);
+  --color-gold-soft: var(--gold-soft);
+  --color-gold-deep: var(--gold-deep);
+  --color-night: var(--night);
+  --font-display: var(--font-cormorant), Georgia, serif;
+  --font-body: var(--font-jost), system-ui, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--canvas);
+  color: var(--ink);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+::selection {
+  background: var(--gold);
+  color: var(--canvas);
+}
+
+@utility shell {
+  @apply mx-auto w-full max-w-7xl px-5 sm:px-8 lg:px-12;
+}
+
+@utility label {
+  @apply font-body text-[0.7rem] font-medium uppercase tracking-[0.28em];
+}
+
+@utility display {
+  @apply font-display font-medium tracking-tight;
+}
+
+@utility btn {
+  @apply inline-flex items-center justify-center gap-3 px-8 py-4 text-[0.72rem] font-medium uppercase tracking-[0.24em] transition-all duration-300;
+}
+
+@utility btn-gold {
+  @apply inline-flex items-center justify-center gap-3 bg-gold px-8 py-4 text-[0.72rem] font-medium uppercase tracking-[0.24em] text-night transition-all duration-300 hover:bg-gold-soft;
+}
+
+@utility btn-line {
+  @apply inline-flex items-center justify-center gap-3 border border-line px-8 py-4 text-[0.72rem] font-medium uppercase tracking-[0.24em] text-ink transition-all duration-300 hover:border-gold hover:text-gold;
+}
+
+@utility hairline {
+  @apply h-px w-full bg-line;
+}
+
+@utility field {
+  @apply w-full border border-line bg-card px-4 py-3.5 text-sm text-ink outline-none transition-colors duration-300 placeholder:text-mist/70 focus:border-gold;
+}
+
+@utility field-label {
+  @apply mb-2 block text-[0.65rem] font-medium uppercase tracking-[0.22em] text-mist;
+}
