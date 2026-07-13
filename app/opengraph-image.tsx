@@ -16,10 +16,10 @@ export default function OpengraphImage() {
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
-          backgroundColor: "#0d0a06",
+          backgroundColor: "#faf6f0",
           backgroundImage:
-            "radial-gradient(120% 120% at 50% 0%, #1c160d 0%, #0d0a06 60%)",
-          color: "#ece4d6",
+            "radial-gradient(120% 120% at 50% 0%, #ffffff 0%, #faf6f0 60%)",
+          color: "#2b1a1d",
           fontFamily: "Georgia, serif",
         }}
       >
@@ -27,7 +27,7 @@ export default function OpengraphImage() {
           style={{
             position: "absolute",
             inset: 48,
-            border: "1px solid #332b1f",
+            border: "1px solid #e6dccf",
           }}
         />
         <div
@@ -35,7 +35,7 @@ export default function OpengraphImage() {
             fontSize: 22,
             letterSpacing: 10,
             textTransform: "uppercase",
-            color: "#c2a06a",
+            color: "#7a2233",
           }}
         >
           {site.tagline}
@@ -56,7 +56,7 @@ export default function OpengraphImage() {
             marginTop: 38,
             width: 120,
             height: 1,
-            backgroundColor: "#c2a06a",
+            backgroundColor: "#7a2233",
           }}
         />
         <div
@@ -65,7 +65,7 @@ export default function OpengraphImage() {
             fontSize: 24,
             letterSpacing: 6,
             textTransform: "uppercase",
-            color: "#a89a86",
+            color: "#8a7a72",
           }}
         >
           {`${site.city} · India`}

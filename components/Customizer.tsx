@@ -2,22 +2,23 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import {
   birthstoneMonths,
   carats,
-  computeRange,
+  computePrice,
   defaultSelection,
   describeSelection,
-  finishes,
+  metalColours,
   metals,
+  qualities,
   selectionImage,
-  settings,
   stones,
+  type MetalId,
   type Selection,
 } from "@/lib/customizer";
-import { formatRange, type Product } from "@/lib/products";
+import { formatPrice, type Product } from "@/lib/products";
 import { EnquiryForm } from "@/components/EnquiryForm";
 
 function OptionGroup({
@@ -83,16 +84,37 @@ export function Customizer({ product }: { product?: Product }) {
   const set = <K extends keyof Selection>(key: K, value: Selection[K]) =>
     setSelection((s) => ({ ...s, [key]: value }));
 
-  const range = useMemo(() => computeRange(selection), [selection]);
+  const selectMetal = (id: MetalId) =>
+    setSelection((s) => {
+      const next = metals.find((m) => m.id === id)!;
+      const colour = next.colours.includes(s.colour) ? s.colour : next.colours[0];
+      return { ...s, metal: id, colour };
+    });
+
+  const price = useMemo(() => computePrice(selection), [selection]);
   const image = selectionImage(selection, product);
+
+  const priceCardRef = useRef<HTMLDivElement>(null);
+  const [showBar, setShowBar] = useState(false);
+  useEffect(() => {
+    const el = priceCardRef.current;
+    if (!el) return;
+    const io = new IntersectionObserver(([entry]) => setShowBar(!entry.isIntersecting), {
+      threshold: 0,
+    });
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
   const summary = describeSelection(selection);
   const stone = stones.find((s) => s.id === selection.stone)!;
+  const activeMetal = metals.find((m) => m.id === selection.metal)!;
+  const activeColours = metalColours.filter((c) => activeMetal.colours.includes(c.id));
 
   return (
-    <div className="grid gap-14 lg:grid-cols-[1fr_1.1fr] lg:gap-20">
-      <div className="lg:sticky lg:top-28 lg:self-start">
+    <div className="grid gap-14 pb-24 lg:grid-cols-[1fr_1.1fr] lg:gap-20 lg:pb-0">
+      <div className="flex flex-col lg:sticky lg:top-24 lg:self-start">
         {product && (
-          <div className="mb-5 flex items-baseline justify-between gap-4 border border-line bg-card px-6 py-4">
+          <div className="order-1 mb-4 flex items-baseline justify-between gap-4 border border-line bg-card px-5 py-3">
             <div>
               <p className="label text-[0.58rem] text-gold">Customising</p>
               <p className="display mt-1 text-xl text-ink">
@@ -110,52 +132,73 @@ export function Customizer({ product }: { product?: Product }) {
             </Link>
           </div>
         )}
-        <div className="relative aspect-square overflow-hidden bg-veil">
-          <AnimatePresence mode="popLayout">
-            <motion.div
-              key={image}
-              initial={{ opacity: 0, scale: 1.03 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.7, ease: "easeOut" }}
-              className="absolute inset-0"
-            >
-              <Image
-                src={image}
-                alt={product ? `${product.name} design preview` : "Your design preview"}
-                fill
-                sizes="(max-width: 1024px) 100vw, 45vw"
-                className="object-cover"
-                priority
-              />
-            </motion.div>
-          </AnimatePresence>
-        </div>
-        <div className="mt-6 border border-line bg-card px-7 py-6">
-          <p className="label text-[0.6rem] text-gold">Indicative Range</p>
-          <AnimatePresence mode="wait">
-            <motion.p
-              key={`${range.from}-${range.to}`}
-              initial={{ opacity: 0, y: 6 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -6 }}
-              transition={{ duration: 0.3 }}
-              className="display mt-2 text-2xl text-ink"
-            >
-              {formatRange(range.from, range.to)}
-            </motion.p>
-          </AnimatePresence>
-          <p className="mt-2 text-xs leading-5 text-mist">
-            An indicative range for your selections, confirmed at consultation against the exact
-            stone you choose. {stone.certification}.
-          </p>
-          <p className="mt-4 border-t border-line pt-4 text-xs leading-6 text-mist">{summary}</p>
+        <div ref={priceCardRef} className="order-2 overflow-hidden border border-line bg-card">
+          <div className="relative h-64 w-full border-b border-line bg-veil sm:h-72 lg:h-64">
+            <AnimatePresence mode="popLayout">
+              <motion.div
+                key={image}
+                initial={{ opacity: 0, scale: 1.03 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.7, ease: "easeOut" }}
+                className="absolute inset-0"
+              >
+                <Image
+                  src={image}
+                  alt={product ? `${product.name} design preview` : "Your design preview"}
+                  fill
+                  sizes="(max-width: 1024px) 100vw, 45vw"
+                  className="object-contain"
+                  priority
+                />
+              </motion.div>
+            </AnimatePresence>
+          </div>
+          <div className="px-7 py-6">
+            <p className="label text-[0.6rem] text-gold">Indicative Price</p>
+            <AnimatePresence mode="wait">
+              <motion.p
+                key={price.total}
+                initial={{ opacity: 0, y: 6 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -6 }}
+                transition={{ duration: 0.3 }}
+                className="display mt-2 text-3xl text-ink"
+              >
+                {formatPrice(price.total)}
+              </motion.p>
+            </AnimatePresence>
+            <dl className="mt-5 space-y-2 border-t border-line pt-4 text-xs text-mist">
+              <div className="flex items-center justify-between gap-4">
+                <dt>Centre stone ({selection.carat} ct)</dt>
+                <dd className="text-ink">{formatPrice(price.diamond)}</dd>
+              </div>
+              <div className="flex items-center justify-between gap-4">
+                <dt>Metal &amp; setting</dt>
+                <dd className="text-ink">{formatPrice(price.metal)}</dd>
+              </div>
+              {price.birthstone > 0 && (
+                <div className="flex items-center justify-between gap-4">
+                  <dt>Hidden birthstone</dt>
+                  <dd className="text-ink">{formatPrice(price.birthstone)}</dd>
+                </div>
+              )}
+              <div className="flex items-center justify-between gap-4">
+                <dt>Making charge</dt>
+                <dd className="text-ink">{formatPrice(price.making)}</dd>
+              </div>
+            </dl>
+            <p className="mt-4 border-t border-line pt-4 text-xs leading-5 text-mist">
+              Indicative for your selections; confirmed at consultation against the exact stone you
+              choose. {stone.certification}.
+            </p>
+          </div>
         </div>
       </div>
 
       <div>
-        <OptionGroup step="I" title="Choose your stone" note="Every stone is independently certified and shown to you before it is set.">
-          <div className="grid gap-3 sm:grid-cols-3">
+        <OptionGroup step="I" title="Choose your stone" note="Diamonds and gemstones alike are IGI certified and shown to you before they are set.">
+          <div className="grid gap-3 sm:grid-cols-2">
             {stones.map((s) => (
               <ChoiceButton
                 key={s.id}
@@ -167,23 +210,63 @@ export function Customizer({ product }: { product?: Product }) {
               />
             ))}
           </div>
+          <div className="mt-5">
+            <p className="field-label">Colour &amp; clarity</p>
+            <div className="grid gap-3 sm:grid-cols-2">
+              {qualities.map((q) => (
+                <ChoiceButton
+                  key={q.id}
+                  active={selection.quality === q.id}
+                  onClick={() => set("quality", q.id)}
+                  title={q.name}
+                  note={q.note}
+                />
+              ))}
+            </div>
+          </div>
         </OptionGroup>
 
-        <OptionGroup step="II" title="Select your metal" note="All gold is 18k and HUID hallmarked; platinum is 950 grade.">
+        <OptionGroup step="II" title="Select your metal" note="Karat sets the gold content; choose your colour beneath. All gold is HUID hallmarked.">
           <div className="grid gap-3 sm:grid-cols-2">
             {metals.map((m) => (
               <ChoiceButton
                 key={m.id}
                 active={selection.metal === m.id}
-                onClick={() => set("metal", m.id)}
+                onClick={() => selectMetal(m.id)}
                 title={m.name}
                 note={m.note}
               />
             ))}
           </div>
+          {activeColours.length > 1 && (
+            <div className="mt-5">
+              <p className="field-label">Metal colour</p>
+              <div className="flex flex-wrap gap-3">
+                {activeColours.map((c) => (
+                  <button
+                    key={c.id}
+                    type="button"
+                    onClick={() => set("colour", c.id)}
+                    aria-pressed={selection.colour === c.id}
+                    className={`flex items-center gap-2.5 border px-4 py-2.5 text-xs font-medium transition-all duration-300 ${
+                      selection.colour === c.id
+                        ? "border-gold bg-gold/[0.06] text-ink"
+                        : "border-line text-mist hover:border-gold/50 hover:text-ink"
+                    }`}
+                  >
+                    <span
+                      className="h-4 w-4 rounded-full border border-line"
+                      style={{ background: c.swatch }}
+                    />
+                    {c.name}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
         </OptionGroup>
 
-        <OptionGroup step="III" title="Set your carat weight" note="Each weight is offered at multiple price points depending on colour and clarity.">
+        <OptionGroup step="III" title="Set your carat weight" note="The live price above updates with every choice, so it is always in view.">
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {carats.map((c) => (
               <ChoiceButton
@@ -197,54 +280,8 @@ export function Customizer({ product }: { product?: Product }) {
           </div>
         </OptionGroup>
 
-        <OptionGroup step="IV" title="Choose the setting height">
-          <div className="grid gap-3 sm:grid-cols-2">
-            {settings.map((s) => (
-              <button
-                key={s.id}
-                type="button"
-                onClick={() => set("setting", s.id)}
-                aria-pressed={selection.setting === s.id}
-                className={`group overflow-hidden border text-left transition-all duration-300 ${
-                  selection.setting === s.id
-                    ? "border-gold"
-                    : "border-line hover:border-gold/50"
-                }`}
-              >
-                <div className="relative aspect-[5/3] overflow-hidden bg-veil">
-                  <Image
-                    src={s.image}
-                    alt={s.name}
-                    fill
-                    sizes="(max-width: 640px) 100vw, 30vw"
-                    className="object-cover transition-transform duration-700 group-hover:scale-105"
-                  />
-                </div>
-                <div className="px-5 py-4">
-                  <p className="text-sm font-medium text-ink">{s.name}</p>
-                  <p className="mt-1 text-xs leading-5 text-mist">{s.note}</p>
-                </div>
-              </button>
-            ))}
-          </div>
-        </OptionGroup>
-
-        <OptionGroup step="V" title="Select the metal finish">
-          <div className="grid gap-3 sm:grid-cols-3">
-            {finishes.map((f) => (
-              <ChoiceButton
-                key={f.id}
-                active={selection.finish === f.id}
-                onClick={() => set("finish", f.id)}
-                title={f.name}
-                note={f.note}
-              />
-            ))}
-          </div>
-        </OptionGroup>
-
         <OptionGroup
-          step="VI"
+          step="IV"
           title="Make it secretly yours"
           note="A hidden birthstone beneath the setting and an inscription inside the band, details only you will know."
         >
@@ -281,7 +318,7 @@ export function Customizer({ product }: { product?: Product }) {
 
         <section className="border-t border-line pt-10" id="complete">
           <div className="flex items-baseline gap-4">
-            <span className="font-display text-lg italic text-gold">VII</span>
+            <span className="font-display text-lg italic text-gold">V</span>
             <div>
               <h3 className="display text-xl text-ink">See it before it exists</h3>
               <p className="mt-1 text-sm leading-6 text-mist">
@@ -293,10 +330,31 @@ export function Customizer({ product }: { product?: Product }) {
           <div className="mt-8">
             <EnquiryForm
               type="home-atelier"
-              context={`${product ? `Design: ${product.name} - ${product.style} (${product.slug}) - ` : ""}Customizer selections - ${summary} - Indicative range ${formatRange(range.from, range.to)}`}
+              context={`${product ? `Design: ${product.name} - ${product.style} (${product.slug}) - ` : ""}Customizer selections - ${summary} - Indicative price ${formatPrice(price.total)}`}
             />
           </div>
         </section>
+      </div>
+
+      <div
+        className={`fixed inset-x-0 bottom-0 z-40 border-t border-line bg-canvas/95 backdrop-blur-md transition-transform duration-300 lg:hidden ${
+          showBar ? "translate-y-0" : "translate-y-full"
+        }`}
+      >
+        <div className="shell flex items-center justify-between gap-4 py-3 pr-20">
+          <div>
+            <p className="label text-[0.52rem] text-gold">Indicative Price</p>
+            <p className="display text-xl leading-tight text-ink">
+              {formatPrice(price.total)}
+            </p>
+          </div>
+          <a
+            href="#complete"
+            className="text-[0.6rem] uppercase tracking-[0.16em] text-gold underline-offset-4 hover:underline"
+          >
+            Enquire ↓
+          </a>
+        </div>
       </div>
     </div>
   );

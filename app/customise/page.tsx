@@ -1,12 +1,11 @@
 import type { Metadata } from "next";
 import { Customizer } from "@/components/Customizer";
-import { SectionHeading } from "@/components/SectionHeading";
 import { getProduct } from "@/lib/products";
 
 export const metadata: Metadata = {
   title: "Customise Your Jewellery - A Guided Design Journey",
   description:
-    "Design your made-to-order piece: choose natural or lab-grown diamonds or gemstones, your metal, carat, setting and finish, with hidden birthstones and inscriptions. Indicative pricing, confirmed at consultation.",
+    "Design your made-to-order piece: choose IGI certified natural or lab-grown diamonds or gemstones, your metal and karat, carat weight, colour and clarity, with hidden birthstones and inscriptions. Indicative pricing, confirmed at consultation.",
 };
 
 export default async function CustomisePage({
@@ -19,20 +18,11 @@ export default async function CustomisePage({
 
   return (
     <>
-      <section className="shell pb-16 pt-36 lg:pt-44">
-        <SectionHeading
-          eyebrow="The Design Journey"
-          title={
-            product
-              ? `Make the ${product.name} entirely yours.`
-              : "Seven decisions. One piece that exists for no one else."
-          }
-          intro={
-            product
-              ? `You are customising the ${product.name}: ${product.style.toLowerCase()}. The preview follows your metal as you choose; everything is confirmed in person, with the stones in front of you.`
-              : "Move through each choice at your own pace. The preview and indicative range follow you. Nothing is final here; everything is confirmed in person, with the stones in front of you."
-          }
-        />
+      <section className="shell pb-5 pt-24 text-center lg:pb-6">
+        <p className="label text-gold">The Design Journey</p>
+        <h1 className="display mt-2 text-2xl text-ink sm:text-3xl">
+          {product ? `Make the ${product.name} entirely yours` : "Design a piece for no one else"}
+        </h1>
       </section>
       <section className="shell pb-24 lg:pb-32">
         <Customizer product={product} />

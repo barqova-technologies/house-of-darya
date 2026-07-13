@@ -21,7 +21,7 @@ const styles = {
     textAlign: "center" as const,
   },
   brand: {
-    color: "#a8854e",
+    color: "#7a2233",
     fontSize: "12px",
     letterSpacing: "5px",
     textTransform: "uppercase" as const,
@@ -30,7 +30,7 @@ const styles = {
   heading: { color: "#221c15", fontSize: "26px", fontWeight: 500, margin: "0 0 16px" },
   text: { color: "#716657", fontSize: "15px", lineHeight: "26px", margin: "0 0 16px" },
   hr: { borderColor: "#ded5c6", margin: "32px 0" },
-  footer: { color: "#a8854e", fontSize: "11px", letterSpacing: "3px", textTransform: "uppercase" as const },
+  footer: { color: "#7a2233", fontSize: "11px", letterSpacing: "3px", textTransform: "uppercase" as const },
 };
 
 const messages: Record<Enquiry["type"], { heading: string; body: string }> = {
@@ -66,11 +66,11 @@ export default function CustomerAcknowledgementEmail({ enquiry }: { enquiry: Enq
           <Text style={styles.text}>{copy.body}</Text>
           <Text style={styles.text}>
             Every House of Darya piece is 100% made-to-order, HUID hallmarked, and set with IGI
-            certified diamonds or SGL certified gemstones.
+            certified diamonds and gemstones.
           </Text>
           <Hr style={styles.hr} />
           <Text style={styles.text}>
-            <Link href="https://houseofdarya.com" style={{ color: "#a8854e" }}>
+            <Link href="https://houseofdarya.com" style={{ color: "#7a2233" }}>
               houseofdarya.com
             </Link>
           </Text>

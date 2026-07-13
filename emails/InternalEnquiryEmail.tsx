@@ -21,7 +21,7 @@ const styles = {
     padding: "40px 48px",
   },
   brand: {
-    color: "#a8854e",
+    color: "#7a2233",
     fontSize: "11px",
     letterSpacing: "4px",
     textTransform: "uppercase" as const,
@@ -31,7 +31,7 @@ const styles = {
   meta: { color: "#716657", fontSize: "13px", margin: "0 0 24px" },
   hr: { borderColor: "#ded5c6", margin: "24px 0" },
   label: {
-    color: "#a8854e",
+    color: "#7a2233",
     fontSize: "10px",
     letterSpacing: "2px",
     textTransform: "uppercase" as const,

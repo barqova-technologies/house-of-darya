@@ -14,7 +14,7 @@ export function TrustMarks({ compact = false }: { compact?: boolean }) {
     );
   }
   return (
-    <div className="grid grid-cols-2 gap-px bg-line sm:grid-cols-3 lg:grid-cols-6">
+    <div className="grid grid-cols-2 gap-px bg-line sm:grid-cols-3 lg:grid-cols-5">
       {trustMarks.map((mark, i) => (
         <Reveal key={mark.title} delay={i * 0.06} className="bg-canvas">
           <div className="flex h-full flex-col items-center gap-2 px-4 py-8 text-center">

@@ -1,16 +1,16 @@
 @import "tailwindcss";
 
 :root {
-  --canvas: #131009;
-  --card: #1b1610;
-  --veil: #221c14;
-  --ink: #ece4d6;
-  --mist: #a89a86;
-  --line: #332b1f;
-  --gold: #c2a06a;
-  --gold-soft: #d8bc8a;
-  --gold-deep: #a8854e;
-  --night: #0d0a06;
+  --canvas: #faf6f0;
+  --card: #ffffff;
+  --veil: #f2ebe1;
+  --ink: #2b1a1d;
+  --mist: #8a7a72;
+  --line: #e6dccf;
+  --gold: #7a2233;
+  --gold-soft: #9a3549;
+  --gold-deep: #531322;
+  --night: #3a0f1a;
 }
 
 @theme inline {
@@ -62,7 +62,7 @@ body {
 }
 
 @utility btn-gold {
-  @apply inline-flex items-center justify-center gap-3 bg-gold px-8 py-4 text-[0.72rem] font-medium uppercase tracking-[0.24em] text-night transition-all duration-300 hover:bg-gold-soft;
+  @apply inline-flex items-center justify-center gap-3 bg-gold px-8 py-4 text-[0.72rem] font-medium uppercase tracking-[0.24em] text-canvas transition-all duration-300 hover:bg-gold-soft;
 }
 
 @utility btn-line {

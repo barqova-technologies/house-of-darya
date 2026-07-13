@@ -9,8 +9,6 @@ import { Logo } from "@/components/Logo";
 const navItems = [
   { href: "/collections", label: "Collections" },
   { href: "/home-atelier", label: "Home Atelier" },
-  { href: "/consultation", label: "Consultation" },
-  { href: "/contact", label: "Contact" },
 ];
 
 export function SiteHeader() {
@@ -38,14 +36,11 @@ export function SiteHeader() {
 
   return (
     <header
-      className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${
-        scrolled || open
-          ? "border-b border-line bg-canvas/95 backdrop-blur-md"
-          : "border-b border-transparent bg-transparent"
+      className={`fixed inset-x-0 top-0 z-50 bg-canvas/95 backdrop-blur-md transition-all duration-500 ${
+        scrolled || open ? "border-b border-line" : "border-b border-transparent"
       }`}
     >
-      <div className="shell flex h-20 items-center justify-between gap-6">
-        <Logo className="h-10 w-auto sm:h-11" />
+      <div className="shell grid h-20 grid-cols-[1fr_auto_1fr] items-center gap-4">
         <nav className="hidden items-center gap-8 lg:flex">
           {navItems.map((item) => (
             <Link
@@ -59,25 +54,36 @@ export function SiteHeader() {
             </Link>
           ))}
         </nav>
-        <div className="flex items-center gap-3">
-          <Link href="/home-atelier#book" className="btn-gold hidden !px-6 !py-3 md:inline-flex">
+        <button
+          type="button"
+          aria-label={open ? "Close menu" : "Open menu"}
+          onClick={() => setOpen((v) => !v)}
+          className="flex h-9 w-9 flex-col items-center justify-center gap-1.5 justify-self-start lg:hidden"
+        >
+          <span
+            className={`h-px w-6 bg-ink transition-all duration-300 ${open ? "translate-y-[3.5px] rotate-45" : ""}`}
+          />
+          <span
+            className={`h-px w-6 bg-ink transition-all duration-300 ${open ? "-translate-y-[3.5px] -rotate-45" : ""}`}
+          />
+        </button>
+
+        <Logo className="h-10 w-auto justify-self-center sm:h-11" />
+
+        <div className="hidden flex-col items-end justify-self-end lg:flex">
+          <Link href="/home-atelier#book" className="btn-gold !px-6 !py-3">
             Book Home Atelier
           </Link>
-          <button
-            type="button"
-            aria-label={open ? "Close menu" : "Open menu"}
-            onClick={() => setOpen((v) => !v)}
-            className="flex h-9 w-9 flex-col items-center justify-center gap-1.5 lg:hidden"
+          <Link
+            href="/home-atelier"
+            className="mt-1.5 text-[0.56rem] uppercase tracking-[0.2em] text-mist transition-colors hover:text-gold"
           >
-            <span
-              className={`h-px w-6 bg-ink transition-all duration-300 ${open ? "translate-y-[3.5px] rotate-45" : ""}`}
-            />
-            <span
-              className={`h-px w-6 bg-ink transition-all duration-300 ${open ? "-translate-y-[3.5px] -rotate-45" : ""}`}
-            />
-          </button>
+            What is Home Atelier?
+          </Link>
         </div>
+        <span className="justify-self-end lg:hidden" aria-hidden="true" />
       </div>
+
       <AnimatePresence>
         {open && (
           <motion.div
@@ -103,6 +109,18 @@ export function SiteHeader() {
                   </Link>
                 </motion.div>
               ))}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.3 }}
+              >
+                <Link
+                  href="/home-atelier"
+                  className="block border-b border-line py-4 text-sm uppercase tracking-[0.2em] text-mist transition-colors hover:text-gold"
+                >
+                  What is Home Atelier?
+                </Link>
+              </motion.div>
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}

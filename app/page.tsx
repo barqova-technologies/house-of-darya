@@ -25,7 +25,7 @@ const processSteps = [
   },
   {
     title: "Crafted for You",
-    text: "Your piece is made to order, HUID hallmarked, and set with IGI certified diamonds or SGL certified gemstones before it reaches you.",
+    text: "Your piece is made to order, HUID hallmarked, and set with IGI certified diamonds and gemstones before it reaches you.",
   },
 ];
 
@@ -39,21 +39,6 @@ export default function HomePage() {
       <section className="border-y border-line">
         <div className="shell py-14 lg:py-16">
           <TrustMarks />
-        </div>
-      </section>
-
-      <section className="shell py-24 lg:py-32">
-        <SectionHeading
-          eyebrow="The Collections"
-          title="Four ways to begin"
-          intro="Every collection is a starting point, never a finish line: each design is made to order and refined around you."
-        />
-        <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          {collections.map((collection, i) => (
-            <Reveal key={collection.slug} delay={i * 0.08}>
-              <CollectionCard collection={collection} tall />
-            </Reveal>
-          ))}
         </div>
       </section>
 
@@ -127,12 +112,12 @@ export default function HomePage() {
               Designed in conversation, <em className="italic text-gold">never from a shelf</em>
             </h2>
             <p className="mt-6 text-[0.95rem] leading-7 text-mist">
-              Choose your stone: natural diamond, lab-grown diamond or coloured gemstone. Add your
-              metal, carat weight, setting height and finish. Then make it secretly yours with a
-              hidden birthstone and an inscription only you will ever read.
+              Choose your stone: an IGI certified natural diamond, lab-grown diamond or gemstone.
+              Add your metal, karat and carat weight, and the colour and clarity that suit you. Then
+              make it secretly yours with a hidden birthstone and an inscription only you will read.
             </p>
             <div className="mt-8 grid grid-cols-2 gap-px bg-line sm:grid-cols-3">
-              {["Stone", "Metal", "Carat", "Setting", "Finish", "Inscription"].map((item) => (
+              {["Stone", "Metal", "Carat", "Colour", "Birthstone", "Inscription"].map((item) => (
                 <div key={item} className="bg-canvas px-4 py-4 text-center">
                   <span className="text-[0.65rem] uppercase tracking-[0.2em] text-mist">{item}</span>
                 </div>
@@ -214,7 +199,7 @@ export default function HomePage() {
               that exists nowhere else in the world.
             </p>
             <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
-              <Link href="/home-atelier#book" className="btn bg-gold-soft text-night hover:bg-gold">
+              <Link href="/home-atelier#book" className="btn bg-gold-soft text-canvas hover:bg-gold">
                 Book Home Atelier
               </Link>
               <a

@@ -1,17 +1,17 @@
 import { images } from "@/lib/images";
 import type { MetalColor, Product } from "@/lib/products";
 
-export type StoneId = "natural" | "lab-grown" | "gemstone";
-export type MetalId = "yellow" | "white" | "rose" | "platinum";
+export type StoneId = "natural" | "lab-grown";
+export type MetalId = "gold-18k" | "gold-14k" | "gold-9k" | "silver-925";
+export type MetalColorId = "yellow" | "white" | "rose";
 export type CaratId = "0.50" | "0.70" | "1.00" | "1.50" | "2.00";
-export type SettingId = "high" | "low";
-export type FinishId = "polish" | "satin" | "brushed";
+export type QualityId = "si-hi" | "vs-ef";
 
 export const stones: { id: StoneId; name: string; note: string; certification: string; baseFrom: number; baseTo: number }[] = [
   {
     id: "natural",
     name: "Natural Diamond",
-    note: "Earth-formed brilliance, graded for cut, colour and clarity",
+    note: "Earth eternal brilliance, graded for cut, colour and clarity",
     certification: "IGI Certified",
     baseFrom: 120000,
     baseTo: 180000,
@@ -24,21 +24,30 @@ export const stones: { id: StoneId; name: string; note: string; certification: s
     baseFrom: 65000,
     baseTo: 95000,
   },
-  {
-    id: "gemstone",
-    name: "Coloured Gemstone",
-    note: "Sapphire, emerald or ruby, chosen for depth of colour",
-    certification: "SGL Certified",
-    baseFrom: 85000,
-    baseTo: 140000,
-  },
 ];
 
-export const metals: { id: MetalId; name: string; note: string; factor: number; image: string }[] = [
-  { id: "yellow", name: "18k Yellow Gold", note: "Warm, classic, HUID hallmarked", factor: 1, image: images.customizer.yellow },
-  { id: "white", name: "18k White Gold", note: "Cool and contemporary, rhodium finished", factor: 1, image: images.customizer.white },
-  { id: "rose", name: "18k Rose Gold", note: "Soft blush warmth, quietly romantic", factor: 1, image: images.customizer.rose },
-  { id: "platinum", name: "Platinum 950", note: "The rarest setting, dense and enduring", factor: 1.18, image: images.customizer.platinum },
+export const qualities: { id: QualityId; name: string; note: string; factor: number }[] = [
+  { id: "si-hi", name: "SI · H-I", note: "Eye-clean brilliance, warm near-white", factor: 1 },
+  { id: "vs-ef", name: "VS · E-F", note: "Higher clarity, near-colourless", factor: 1.35 },
+];
+
+export const metals: {
+  id: MetalId;
+  name: string;
+  note: string;
+  factor: number;
+  colours: MetalColorId[];
+}[] = [
+  { id: "gold-18k", name: "18kt Gold", note: "75% gold · HUID hallmarked", factor: 1, colours: ["yellow", "white", "rose"] },
+  { id: "gold-14k", name: "14kt Gold", note: "58.5% gold · HUID hallmarked", factor: 0.82, colours: ["yellow", "white", "rose"] },
+  { id: "gold-9k", name: "9kt Gold", note: "37.5% gold · HUID hallmarked", factor: 0.62, colours: ["yellow", "white", "rose"] },
+  { id: "silver-925", name: "925 Silver", note: "Sterling silver · rhodium finished", factor: 0.35, colours: ["white"] },
+];
+
+export const metalColours: { id: MetalColorId; name: string; swatch: string }[] = [
+  { id: "yellow", name: "Yellow", swatch: "#d4af6a" },
+  { id: "white", name: "White", swatch: "#d9d9d9" },
+  { id: "rose", name: "Rose", swatch: "#e0a87f" },
 ];
 
 export const carats: { id: CaratId; name: string; note: string; factor: number }[] = [
@@ -47,17 +56,6 @@ export const carats: { id: CaratId; name: string; note: string; factor: number }
   { id: "1.00", name: "1.00 carat", note: "The defining solitaire", factor: 2.4 },
   { id: "1.50", name: "1.50 carat", note: "Commanding presence", factor: 3.8 },
   { id: "2.00", name: "2.00 carat", note: "A rare statement", factor: 5.4 },
-];
-
-export const settings: { id: SettingId; name: string; note: string; image: string }[] = [
-  { id: "high", name: "High Setting", note: "Lifts the stone to gather light from every side", image: images.settingHigh },
-  { id: "low", name: "Low Setting", note: "Sits close to the hand for effortless daily wear", image: images.settingLow },
-];
-
-export const finishes: { id: FinishId; name: string; note: string }[] = [
-  { id: "polish", name: "High Polish", note: "Mirror-bright, the classic finish" },
-  { id: "satin", name: "Satin", note: "A soft, light-diffusing sheen" },
-  { id: "brushed", name: "Brushed", note: "Fine linear texture, quietly modern" },
 ];
 
 export const birthstoneMonths = [
@@ -77,56 +75,71 @@ export const birthstoneMonths = [
 
 export type Selection = {
   stone: StoneId;
+  quality: QualityId;
   metal: MetalId;
+  colour: MetalColorId;
   carat: CaratId;
-  setting: SettingId;
-  finish: FinishId;
   birthstone: string;
   inscription: string;
 };
 
 export const defaultSelection: Selection = {
   stone: "natural",
-  metal: "yellow",
+  quality: "si-hi",
+  metal: "gold-18k",
+  colour: "yellow",
   carat: "0.70",
-  setting: "high",
-  finish: "polish",
   birthstone: "",
   inscription: "",
 };
 
-const round = (n: number) => Math.round(n / 5000) * 5000;
+export const MAKING_CHARGE = 5400;
 
-export function computeRange(s: Selection) {
-  const stone = stones.find((x) => x.id === s.stone)!;
-  const metal = metals.find((x) => x.id === s.metal)!;
-  const carat = carats.find((x) => x.id === s.carat)!;
-  const birthstoneAdd = s.birthstone ? 9000 : 0;
-  return {
-    from: round(stone.baseFrom * carat.factor * metal.factor + birthstoneAdd),
-    to: round(stone.baseTo * carat.factor * metal.factor + birthstoneAdd),
-  };
+const diamondPerCarat: Record<StoneId, Record<QualityId, number>> = {
+  natural: { "si-hi": 95000, "vs-ef": 130000 },
+  "lab-grown": { "si-hi": 22000, "vs-ef": 32000 },
+};
+
+const metalValue: Record<MetalId, number> = {
+  "gold-18k": 45000,
+  "gold-14k": 36000,
+  "gold-9k": 26000,
+  "silver-925": 4000,
+};
+
+const round = (n: number) => Math.round(n / 100) * 100;
+
+export function computePrice(s: Selection) {
+  const caratWeight = parseFloat(s.carat);
+  const diamond = round(diamondPerCarat[s.stone][s.quality] * caratWeight);
+  const metal = metalValue[s.metal];
+  const making = MAKING_CHARGE;
+  const birthstone = s.birthstone ? 9000 : 0;
+  const total = diamond + metal + making + birthstone;
+  return { diamond, metal, making, birthstone, total };
+}
+
+function imageColour(colour: MetalColorId): MetalColor {
+  return colour === "rose" ? "rose" : colour === "yellow" ? "yellow" : "white";
 }
 
 export function selectionImage(s: Selection, product?: Product) {
+  const colour = imageColour(s.colour);
   if (product) {
-    const color: MetalColor = s.metal === "platinum" ? "white" : s.metal;
-    return product.metals[color][0] ?? product.metals.yellow[0];
+    return product.metals[colour][0] ?? product.metals.yellow[0];
   }
-  if (s.stone === "gemstone") return images.customizer.gemstone;
-  return metals.find((x) => x.id === s.metal)!.image;
+  return images.customizer[colour];
 }
 
 export function describeSelection(s: Selection) {
   const stone = stones.find((x) => x.id === s.stone)!;
+  const quality = qualities.find((x) => x.id === s.quality)!;
   const metal = metals.find((x) => x.id === s.metal)!;
-  const setting = settings.find((x) => x.id === s.setting)!;
-  const finish = finishes.find((x) => x.id === s.finish)!;
+  const colour = metalColours.find((x) => x.id === s.colour)!;
+  const metalLabel = metal.id === "silver-925" ? metal.name : `${colour.name} ${metal.name}`;
   const parts = [
-    `${s.carat} ct ${stone.name}`,
-    metal.name,
-    setting.name,
-    `${finish.name} finish`,
+    `${s.carat} ct ${stone.name} (${quality.name})`,
+    metalLabel,
   ];
   if (s.birthstone) parts.push(`Hidden birthstone: ${s.birthstone}`);
   if (s.inscription) parts.push(`Inscription: “${s.inscription}”`);

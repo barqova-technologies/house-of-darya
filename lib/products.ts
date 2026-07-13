@@ -2,7 +2,11 @@ export type CollectionSlug =
   | "modern-elegant"
   | "classic-designer"
   | "statement"
-  | "studs";
+  | "engagement-rings"
+  | "studs"
+  | "signature-earrings";
+
+export type CollectionParent = "Rings" | "Earrings";
 
 export type MetalColor = "yellow" | "white" | "rose";
 
@@ -15,10 +19,12 @@ export const metalNames: Record<MetalColor, string> = {
 export type Collection = {
   slug: CollectionSlug;
   name: string;
-  category: "Rings" | "Studs";
+  parent: CollectionParent;
+  subtext: string; // short headline subtext, e.g. "For your daily comfort"
   tagline: string;
   description: string;
   image: string;
+  comingSoon?: boolean; // photography pending — shown with an empty state
 };
 
 export type Product = {
@@ -31,15 +37,21 @@ export type Product = {
   priceFrom: number;
   priceTo: number;
   metals: Record<MetalColor, string[]>;
+  availableMetals?: MetalColor[];
   lifestyle: string[];
   details: { label: string; value: string }[];
 };
+
+export function productMetals(p: Product): MetalColor[] {
+  return p.availableMetals ?? ["yellow", "white", "rose"];
+}
 
 export const collections: Collection[] = [
   {
     slug: "modern-elegant",
     name: "Modern & Elegant",
-    category: "Rings",
+    parent: "Rings",
+    subtext: "For your daily comfort",
     tagline: "Quiet lines, unmistakable presence",
     description:
       "Modern ceremonial bands with architectural profiles: brushed planes, tension-set stones and edges drawn with restraint.",
@@ -48,7 +60,8 @@ export const collections: Collection[] = [
   {
     slug: "classic-designer",
     name: "Classic & Designer",
-    category: "Rings",
+    parent: "Rings",
+    subtext: "For moments that matter",
     tagline: "Heirlooms, begun today",
     description:
       "Timeless wedding rings for her and for him, alongside our Bold by Design series: classics refined by our designers and made for generations.",
@@ -56,21 +69,43 @@ export const collections: Collection[] = [
   },
   {
     slug: "statement",
-    name: "Statement Rings",
-    category: "Rings",
+    name: "Statement",
+    parent: "Rings",
+    subtext: "Own the spotlight",
     tagline: "For moments that ask more",
     description:
       "Bold compositions in diamonds and sculpted gold, made for the hand that carries occasions, celebrations and milestones.",
     image: "/images/products/eve/yellow-top.jpg",
   },
   {
+    slug: "engagement-rings",
+    name: "Engagement Rings",
+    parent: "Rings",
+    subtext: "A lifelong promise",
+    tagline: "The one you say yes to",
+    description:
+      "Solitaires and trilogies built around a single certified stone, made to order for the most personal decision of all.",
+    image: "/images/products/florence/yellow-top.jpg",
+  },
+  {
     slug: "studs",
     name: "Studs",
-    category: "Studs",
+    parent: "Earrings",
+    subtext: "Everyday sparkle",
     tagline: "Light, worn daily",
     description:
       "Solitaire studs in every cut: the most personal kind of everyday brilliance, matched stone to stone and set precisely to catch the light.",
     image: "/images/products/iris-round-studs/yellow-top.jpg",
+  },
+  {
+    slug: "signature-earrings",
+    name: "Signature Earrings",
+    parent: "Earrings",
+    subtext: "Effortlessly unforgettable",
+    tagline: "Movement, made to order",
+    description:
+      "Hoops, drops and cascades in certified diamonds: statement earrings for the moments a stud cannot carry alone.",
+    image: "/images/products/cascading-hoops/yellow-top.jpg",
   },
 ];
 
@@ -995,7 +1030,416 @@ export const products: Product[] = [
       { label: "Metals", value: "Yellow, White, Rose Gold" },
     ],
   },
+  {
+    slug: "florence",
+    name: "Florence",
+    collection: "engagement-rings",
+    style: "Oval & Pear Trilogy",
+    description: "An oval centre flanked by two pears, read as one continuous line of light.",
+    story:
+      "Florence sets three stones in conversation: an oval held between two pears that lean in like open hands. A trilogy for a promise with a past, a present and a future.",
+    priceFrom: 145000,
+    priceTo: 260000,
+    metals: {
+      yellow: ["/images/products/florence/yellow-top.jpg", "/images/products/florence/yellow-front.jpg"],
+      white: ["/images/products/florence/white-top.jpg", "/images/products/florence/white-front.jpg"],
+      rose: ["/images/products/florence/rose-top.jpg", "/images/products/florence/rose-front.jpg"],
+    },
+    lifestyle: ["/images/products/florence/lifestyle-1.jpg", "/images/products/florence/lifestyle-2.jpg"],
+    details: [
+      { label: "Centre Stone", value: "Oval brilliant" },
+      { label: "Accents", value: "Two pear brilliants" },
+      { label: "Setting", value: "Trilogy, claw set" },
+      { label: "Metals", value: "18k Yellow, White, Rose Gold" },
+    ],
+  },
+  {
+    slug: "sophia",
+    name: "Sophia",
+    collection: "engagement-rings",
+    style: "4-Claw Pear Solitaire",
+    description: "A single pear lifted high in four fine claws.",
+    story:
+      "Sophia is the solitaire pared to its essence: one pear-cut diamond raised on four slender claws so nothing stands between the stone and the light.",
+    priceFrom: 120000,
+    priceTo: 240000,
+    metals: {
+      yellow: ["/images/products/sophia/yellow-top.jpg", "/images/products/sophia/yellow-front.jpg"],
+      white: ["/images/products/sophia/white-top.jpg", "/images/products/sophia/white-front.jpg"],
+      rose: ["/images/products/sophia/rose-top.jpg", "/images/products/sophia/rose-front.jpg"],
+    },
+    lifestyle: ["/images/products/sophia/lifestyle-1.jpg", "/images/products/sophia/lifestyle-2.jpg"],
+    details: [
+      { label: "Centre Stone", value: "Pear brilliant, four-claw" },
+      { label: "Setting", value: "Raised solitaire" },
+      { label: "Band", value: "Fine tapered" },
+      { label: "Metals", value: "18k Yellow, White, Rose Gold" },
+    ],
+  },
+  {
+    slug: "avery",
+    name: "Avery",
+    collection: "engagement-rings",
+    style: "Oval Solitaire with Accent Band",
+    description: "An oval solitaire above a band of marquise and round brilliants.",
+    story:
+      "Avery lifts an oval above a band that never rests: marquise and round brilliants run the shoulders so the light continues long after the centre stone ends.",
+    priceFrom: 130000,
+    priceTo: 250000,
+    metals: {
+      yellow: ["/images/products/avery/yellow-top.jpg", "/images/products/avery/yellow-front.jpg"],
+      white: ["/images/products/avery/white-top.jpg", "/images/products/avery/white-front.jpg"],
+      rose: ["/images/products/avery/rose-top.jpg", "/images/products/avery/rose-front.jpg"],
+    },
+    lifestyle: ["/images/products/avery/lifestyle-1.jpg"],
+    details: [
+      { label: "Centre Stone", value: "Oval brilliant" },
+      { label: "Band", value: "Marquise & round brilliants" },
+      { label: "Setting", value: "Solitaire with accent shoulders" },
+      { label: "Metals", value: "18k Yellow, White, Rose Gold" },
+    ],
+  },
+  {
+    slug: "vienna-solitaire",
+    name: "Vienna",
+    collection: "engagement-rings",
+    style: "Radiant Bezel Solitaire",
+    description: "A radiant cut wrapped in a full bezel, clean and modern.",
+    story:
+      "Vienna sets a radiant cut into a full bezel of gold: no claws, no interruptions, just a rectangle of fire held flush in a smooth band. Modern to the last line.",
+    priceFrom: 125000,
+    priceTo: 235000,
+    metals: {
+      yellow: ["/images/products/vienna-solitaire/yellow-top.jpg", "/images/products/vienna-solitaire/yellow-front.jpg"],
+      white: ["/images/products/vienna-solitaire/white-top.jpg", "/images/products/vienna-solitaire/white-front.jpg"],
+      rose: ["/images/products/vienna-solitaire/rose-top.jpg", "/images/products/vienna-solitaire/rose-front.jpg"],
+    },
+    lifestyle: ["/images/products/vienna-solitaire/lifestyle-1.jpg"],
+    details: [
+      { label: "Centre Stone", value: "Radiant cut, full bezel" },
+      { label: "Setting", value: "Flush bezel solitaire" },
+      { label: "Band", value: "Smooth rounded" },
+      { label: "Metals", value: "18k Yellow, White, Rose Gold" },
+    ],
+  },
+  {
+    slug: "amira",
+    name: "Amira",
+    collection: "engagement-rings",
+    style: "Pear with Marquise Accents",
+    description: "A pear centre with marquise accents sweeping along the shoulders.",
+    story:
+      "Amira crowns the hand with a pear and lets marquise accents sweep away from it like a wake. Romantic in shape, deliberate in every angle.",
+    priceFrom: 130000,
+    priceTo: 245000,
+    metals: {
+      yellow: ["/images/products/amira/yellow-top.jpg", "/images/products/amira/yellow-front.jpg"],
+      white: ["/images/products/amira/white-top.jpg", "/images/products/amira/white-front.jpg"],
+      rose: ["/images/products/amira/rose-top.jpg", "/images/products/amira/rose-front.jpg"],
+    },
+    lifestyle: ["/images/products/amira/lifestyle-1.jpg"],
+    details: [
+      { label: "Centre Stone", value: "Pear brilliant" },
+      { label: "Accents", value: "Marquise shoulders" },
+      { label: "Setting", value: "Claw set" },
+      { label: "Metals", value: "18k Yellow, White, Rose Gold" },
+    ],
+  },
+  {
+    slug: "viola",
+    name: "Viola",
+    collection: "engagement-rings",
+    style: "Emerald Baguette Trilogy",
+    description: "An emerald cut between two tapered baguettes, pure geometry.",
+    story:
+      "Viola is architecture for the hand: an emerald cut flanked by two tapered baguettes, step-cut calm on step-cut calm, a trilogy drawn entirely in straight lines.",
+    priceFrom: 140000,
+    priceTo: 255000,
+    metals: {
+      yellow: ["/images/products/viola/yellow-top.jpg", "/images/products/viola/yellow-front.jpg"],
+      white: ["/images/products/viola/white-top.jpg", "/images/products/viola/white-front.jpg"],
+      rose: ["/images/products/viola/rose-top.jpg", "/images/products/viola/rose-front.jpg"],
+    },
+    lifestyle: [
+      "/images/products/viola/lifestyle-1.jpg",
+      "/images/products/viola/lifestyle-2.jpg",
+      "/images/products/viola/lifestyle-3.jpg",
+    ],
+    details: [
+      { label: "Centre Stone", value: "Emerald cut" },
+      { label: "Accents", value: "Two tapered baguettes" },
+      { label: "Setting", value: "Trilogy, channel & claw" },
+      { label: "Metals", value: "18k Yellow, White, Rose Gold" },
+    ],
+  },
+  {
+    slug: "isabeau",
+    name: "Isabeau",
+    collection: "engagement-rings",
+    style: "Twisted Pear Toi et Moi",
+    description: "Two pears crossing in a twisted toi et moi.",
+    story:
+      "Isabeau winds two pears past one another in a twist of gold: the toi et moi, the ring of two souls, given a movement that never quite comes to rest.",
+    priceFrom: 120000,
+    priceTo: 230000,
+    metals: {
+      yellow: ["/images/products/isabeau/yellow-top.jpg", "/images/products/isabeau/yellow-front.jpg"],
+      white: ["/images/products/isabeau/white-top.jpg", "/images/products/isabeau/white-front.jpg"],
+      rose: ["/images/products/isabeau/rose-top.jpg", "/images/products/isabeau/rose-front.jpg"],
+    },
+    lifestyle: [],
+    details: [
+      { label: "Stones", value: "Two pear brilliants" },
+      { label: "Setting", value: "Twisted toi et moi" },
+      { label: "Band", value: "Crossover" },
+      { label: "Metals", value: "18k Yellow, White, Rose Gold" },
+    ],
+  },
+  {
+    slug: "althea",
+    name: "Althea",
+    collection: "engagement-rings",
+    style: "Oval Trilogy Cluster",
+    description: "An oval trilogy framed by a cluster of brilliants.",
+    story:
+      "Althea gathers its light: an oval trilogy at the centre, ringed by a cluster of brilliants that make one large stone of many. Presence, without a single vast diamond.",
+    priceFrom: 150000,
+    priceTo: 270000,
+    metals: {
+      yellow: ["/images/products/althea/yellow-top.jpg", "/images/products/althea/yellow-front.jpg"],
+      white: ["/images/products/althea/white-top.jpg", "/images/products/althea/white-front.jpg"],
+      rose: ["/images/products/althea/rose-top.jpg", "/images/products/althea/rose-front.jpg"],
+    },
+    lifestyle: ["/images/products/althea/lifestyle-1.jpg", "/images/products/althea/lifestyle-2.jpg"],
+    details: [
+      { label: "Centre", value: "Oval trilogy" },
+      { label: "Frame", value: "Brilliant cluster" },
+      { label: "Setting", value: "Cluster halo" },
+      { label: "Metals", value: "18k Yellow, White, Rose Gold" },
+    ],
+  },
+  {
+    slug: "solene",
+    name: "Solène",
+    collection: "engagement-rings",
+    style: "Emerald Solitaire, Tapered Baguette Band",
+    description: "An emerald solitaire raised over a tapered baguette band.",
+    story:
+      "Solène balances an emerald-cut solitaire above a band of tapered baguettes: a clean rectangle of light with a quiet rhythm running beneath it.",
+    priceFrom: 135000,
+    priceTo: 250000,
+    metals: {
+      yellow: ["/images/products/solene/yellow-top.jpg", "/images/products/solene/yellow-front.jpg"],
+      white: [],
+      rose: [],
+    },
+    availableMetals: ["yellow"],
+    lifestyle: [
+      "/images/products/solene/lifestyle-1.jpg",
+      "/images/products/solene/lifestyle-2.jpg",
+      "/images/products/solene/lifestyle-3.jpg",
+      "/images/products/solene/lifestyle-4.jpg",
+      "/images/products/solene/lifestyle-5.jpg",
+      "/images/products/solene/lifestyle-6.jpg",
+    ],
+    details: [
+      { label: "Centre Stone", value: "Emerald cut solitaire" },
+      { label: "Band", value: "Tapered baguettes" },
+      { label: "Setting", value: "Raised solitaire" },
+      { label: "Metals", value: "18k Yellow Gold" },
+    ],
+  },
+  {
+    slug: "cascading-hoops",
+    name: "Cascading Hoops",
+    collection: "signature-earrings",
+    style: "Signature Diamond Hoops",
+    description: "Hoops set with graduated brilliants that cascade around the curve.",
+    story:
+      "The Cascading Hoops run graduated brilliants from lobe to crest, so the light builds as the hoop rises: our signature earring and the one most often never taken off.",
+    priceFrom: 90000,
+    priceTo: 180000,
+    metals: {
+      yellow: ["/images/products/cascading-hoops/yellow-top.jpg", "/images/products/cascading-hoops/yellow-side.jpg"],
+      white: ["/images/products/cascading-hoops/white-top.jpg", "/images/products/cascading-hoops/white-side.jpg"],
+      rose: ["/images/products/cascading-hoops/rose-top.jpg", "/images/products/cascading-hoops/rose-side.jpg"],
+    },
+    lifestyle: ["/images/products/cascading-hoops/lifestyle-1.jpg", "/images/products/cascading-hoops/lifestyle-2.jpg"],
+    details: [
+      { label: "Stones", value: "Graduated round brilliants" },
+      { label: "Setting", value: "Shared claw" },
+      { label: "Closure", value: "Hinged snap" },
+      { label: "Metals", value: "18k Yellow, White, Rose Gold" },
+    ],
+  },
+  {
+    slug: "arietta",
+    name: "Arietta",
+    collection: "signature-earrings",
+    style: "Pear Double Drop Earrings",
+    description: "Two pears falling in a double drop from the lobe.",
+    story:
+      "Arietta hangs two pears in sequence, a smaller above a larger, so they swing as one line of light with every turn of the head.",
+    priceFrom: 85000,
+    priceTo: 165000,
+    metals: {
+      yellow: ["/images/products/arietta/yellow-top.jpg", "/images/products/arietta/yellow-side.jpg"],
+      white: ["/images/products/arietta/white-top.jpg", "/images/products/arietta/white-side.jpg"],
+      rose: ["/images/products/arietta/rose-top.jpg", "/images/products/arietta/rose-side.jpg"],
+    },
+    lifestyle: ["/images/products/arietta/lifestyle-1.jpg", "/images/products/arietta/lifestyle-2.jpg"],
+    details: [
+      { label: "Stones", value: "Paired pear brilliants" },
+      { label: "Style", value: "Double drop" },
+      { label: "Back", value: "Secure post" },
+      { label: "Metals", value: "18k Yellow, White, Rose Gold" },
+    ],
+  },
+  {
+    slug: "tara",
+    name: "Tara",
+    collection: "signature-earrings",
+    style: "Diamond Drop Earrings",
+    description: "A drop of brilliants suspended from a fine stud.",
+    story:
+      "Tara suspends a line of brilliants from a single stud: understated when still, unmistakable when it moves.",
+    priceFrom: 80000,
+    priceTo: 160000,
+    metals: {
+      yellow: ["/images/products/tara/yellow-top.jpg", "/images/products/tara/yellow-back.jpg"],
+      white: ["/images/products/tara/white-top.jpg", "/images/products/tara/white-back.jpg"],
+      rose: ["/images/products/tara/rose-top.jpg", "/images/products/tara/rose-back.jpg"],
+    },
+    lifestyle: ["/images/products/tara/lifestyle-1.jpg", "/images/products/tara/lifestyle-2.jpg"],
+    details: [
+      { label: "Stones", value: "Round brilliants" },
+      { label: "Style", value: "Articulated drop" },
+      { label: "Back", value: "Secure post" },
+      { label: "Metals", value: "18k Yellow, White, Rose Gold" },
+    ],
+  },
+  {
+    slug: "round-pear-jacket",
+    name: "Round & Pear Jacket",
+    collection: "signature-earrings",
+    style: "Convertible Earring Jacket",
+    description: "A round stud with a detachable pear jacket, two earrings in one.",
+    story:
+      "The Round & Pear Jacket is worn two ways: a quiet round stud by day, a pear-fringed drop by night. One pair, two lives.",
+    priceFrom: 70000,
+    priceTo: 140000,
+    metals: {
+      yellow: ["/images/products/round-pear-jacket/yellow-top.jpg", "/images/products/round-pear-jacket/yellow-front.jpg"],
+      white: ["/images/products/round-pear-jacket/white-top.jpg", "/images/products/round-pear-jacket/white-front.jpg"],
+      rose: ["/images/products/round-pear-jacket/rose-top.jpg", "/images/products/round-pear-jacket/rose-front.jpg"],
+    },
+    lifestyle: [],
+    details: [
+      { label: "Stones", value: "Round stud + pear jacket" },
+      { label: "Style", value: "Convertible, worn two ways" },
+      { label: "Back", value: "Secure post" },
+      { label: "Metals", value: "18k Yellow, White, Rose Gold" },
+    ],
+  },
+  {
+    slug: "lucky-heart",
+    name: "Lucky Heart",
+    collection: "signature-earrings",
+    style: "Heart-Cut Studs",
+    description: "A pair of heart-cut brilliants, worn close to the lobe.",
+    story:
+      "The Lucky Heart keeps it simple and sentimental: two heart-cut diamonds set low and secure, a small charm you never take off.",
+    priceFrom: 45000,
+    priceTo: 90000,
+    metals: {
+      yellow: ["/images/products/lucky-heart/yellow-top.jpg", "/images/products/lucky-heart/yellow-front.jpg"],
+      white: ["/images/products/lucky-heart/white-top.jpg", "/images/products/lucky-heart/white-front.jpg"],
+      rose: ["/images/products/lucky-heart/rose-top.jpg", "/images/products/lucky-heart/rose-front.jpg"],
+    },
+    lifestyle: [],
+    details: [
+      { label: "Stones", value: "Matched heart-cut pair" },
+      { label: "Setting", value: "Three-claw" },
+      { label: "Back", value: "Secure screw back" },
+      { label: "Metals", value: "18k Yellow, White, Rose Gold" },
+    ],
+  },
+  {
+    slug: "cascade-drop",
+    name: "Cascade",
+    collection: "signature-earrings",
+    style: "Pear Dangle Earrings",
+    description: "Pear brilliants dangling in a cascade of light.",
+    story:
+      "Cascade lets a row of pears fall free, each catching the light a beat after the last: movement made of diamonds.",
+    priceFrom: 85000,
+    priceTo: 170000,
+    metals: {
+      yellow: ["/images/products/cascade-drop/yellow-top.jpg", "/images/products/cascade-drop/yellow-front.jpg"],
+      white: ["/images/products/cascade-drop/white-top.jpg", "/images/products/cascade-drop/white-front.jpg"],
+      rose: ["/images/products/cascade-drop/rose-top.jpg", "/images/products/cascade-drop/rose-front.jpg"],
+    },
+    lifestyle: [],
+    details: [
+      { label: "Stones", value: "Graduated pear brilliants" },
+      { label: "Style", value: "Free-hanging dangle" },
+      { label: "Back", value: "Secure post" },
+      { label: "Metals", value: "18k Yellow, White, Rose Gold" },
+    ],
+  },
+  {
+    slug: "marquise-hoop",
+    name: "Marquise Hoop",
+    collection: "signature-earrings",
+    style: "Front-to-Back Marquise Hoops",
+    description: "Marquise stones running front to back around the ear.",
+    story:
+      "The Marquise Hoop turns each stone lengthwise and runs them front to back, so the hoop reads as a single unbroken arc of light.",
+    priceFrom: 95000,
+    priceTo: 185000,
+    metals: {
+      yellow: ["/images/products/marquise-hoop/yellow-top.jpg", "/images/products/marquise-hoop/yellow-front.jpg"],
+      white: ["/images/products/marquise-hoop/white-top.jpg", "/images/products/marquise-hoop/white-front.jpg"],
+      rose: ["/images/products/marquise-hoop/rose-top.jpg", "/images/products/marquise-hoop/rose-front.jpg"],
+    },
+    lifestyle: [],
+    details: [
+      { label: "Stones", value: "Marquise brilliants" },
+      { label: "Style", value: "Front-to-back hoop" },
+      { label: "Closure", value: "Hinged snap" },
+      { label: "Metals", value: "18k Yellow, White, Rose Gold" },
+    ],
+  },
+  {
+    slug: "pear-hoop",
+    name: "Pear Hoop",
+    collection: "signature-earrings",
+    style: "Shared-Prong Pear Hoops",
+    description: "Pear brilliants shared-prong set around a full hoop.",
+    story:
+      "The Pear Hoop rings the ear in shared-prong pears, each stone lifting into the next: our most generous hoop, made for the moments that ask for more.",
+    priceFrom: 110000,
+    priceTo: 210000,
+    metals: {
+      yellow: ["/images/products/pear-hoop/yellow-top.jpg", "/images/products/pear-hoop/yellow-front.jpg"],
+      white: ["/images/products/pear-hoop/white-top.jpg", "/images/products/pear-hoop/white-front.jpg"],
+      rose: ["/images/products/pear-hoop/rose-top.jpg", "/images/products/pear-hoop/rose-front.jpg"],
+    },
+    lifestyle: [],
+    details: [
+      { label: "Stones", value: "Shared-prong pear brilliants" },
+      { label: "Style", value: "Full hoop" },
+      { label: "Closure", value: "Hinged snap" },
+      { label: "Metals", value: "18k Yellow, White, Rose Gold" },
+    ],
+  },
 ];
+
+export const collectionParents: CollectionParent[] = ["Rings", "Earrings"];
+
+export function getCollectionsByParent(parent: CollectionParent) {
+  return collections.filter((c) => c.parent === parent);
+}
 
 export function getCollection(slug: string) {
   return collections.find((c) => c.slug === slug);

@@ -75,33 +75,13 @@ export function HomeHero() {
             transition={{ duration: 1, delay: 0.85 }}
             className="mt-12 flex flex-wrap gap-x-7 gap-y-2"
           >
-            {["HUID Hallmarked", "IGI Certified Diamonds", "SGL Certified Gemstones"].map((mark) => (
+            {["HUID Hallmarked", "IGI Certified Diamonds"].map((mark) => (
               <span key={mark} className="text-[0.62rem] uppercase tracking-[0.22em] text-mist">
                 {mark}
               </span>
             ))}
           </motion.div>
         </div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 1, ease }}
-          className="absolute bottom-16 right-12 hidden w-52 overflow-hidden border border-line/60 lg:block xl:w-60"
-        >
-          <div className="relative aspect-square">
-            <Image
-              src={images.heroDetail}
-              alt="Detail of a hand-set House of Darya solitaire"
-              fill
-              sizes="240px"
-              className="object-cover"
-            />
-          </div>
-          <p className="bg-card px-4 py-3 text-[0.58rem] uppercase tracking-[0.2em] text-mist">
-            The Ava · hand-set pavé
-          </p>
-        </motion.div>
       </div>
     </section>
   );

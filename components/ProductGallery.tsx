@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { metalNames, type MetalColor, type Product } from "@/lib/products";
+import { metalNames, productMetals, type MetalColor, type Product } from "@/lib/products";
 
 const swatch: Record<MetalColor, string> = {
   yellow: "#d4af6a",
@@ -12,14 +12,16 @@ const swatch: Record<MetalColor, string> = {
 };
 
 export function ProductGallery({ product }: { product: Product }) {
-  const [metal, setMetal] = useState<MetalColor>("yellow");
-  const views = product.metals[metal];
+  const available = productMetals(product);
+  const [metal, setMetal] = useState<MetalColor>(available[0]);
+  const views = product.metals[metal] ?? product.metals[available[0]];
 
   return (
     <div>
+      {available.length > 1 && (
       <div className="mb-6 flex flex-wrap items-center gap-3">
         <span className="label text-[0.6rem] text-mist">Shown in</span>
-        {(Object.keys(metalNames) as MetalColor[]).map((m) => (
+        {available.map((m) => (
           <button
             key={m}
             type="button"
@@ -39,6 +41,7 @@ export function ProductGallery({ product }: { product: Product }) {
           </button>
         ))}
       </div>
+      )}
 
       <div className="space-y-5">
         <AnimatePresence mode="popLayout" initial={false}>

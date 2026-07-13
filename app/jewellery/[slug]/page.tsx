@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { Reveal } from "@/components/Reveal";
 import { ProductCard } from "@/components/ProductCard";
 import { ProductGallery } from "@/components/ProductGallery";
+import { PriceBreakdown } from "@/components/PriceBreakdown";
 import { EnquiryForm } from "@/components/EnquiryForm";
 import {
   formatRange,
@@ -75,17 +76,6 @@ export default async function ProductPage({
                 Varies with stone, carat and metal, confirmed at your consultation, never before.
               </p>
             </div>
-            <p className="mt-7 text-[0.95rem] leading-7 text-mist">{product.story}</p>
-            <dl className="mt-8 space-y-4 border-t border-line pt-7">
-              {product.details.map((detail) => (
-                <div key={detail.label} className="flex gap-4 text-sm">
-                  <dt className="label mt-0.5 w-32 shrink-0 text-[0.58rem] text-gold">
-                    {detail.label}
-                  </dt>
-                  <dd className="text-ink">{detail.value}</dd>
-                </div>
-              ))}
-            </dl>
             <div className="mt-9 flex flex-col gap-4">
               <Link href="/home-atelier#book" className="btn-gold w-full">
                 See It at Home · Book the Atelier
@@ -107,8 +97,30 @@ export default async function ProductPage({
             <p className="mt-7 flex flex-wrap gap-x-5 gap-y-2 text-[0.6rem] uppercase tracking-[0.18em] text-mist">
               <span>Made-to-Order</span>
               <span>HUID Hallmarked</span>
-              <span>IGI / SGL Certified</span>
+              <span>IGI Certified</span>
             </p>
+          </Reveal>
+        </div>
+      </section>
+
+      <section className="border-t border-line">
+        <div className="shell grid gap-12 py-20 lg:grid-cols-[1.1fr_1fr] lg:gap-20 lg:py-24">
+          <Reveal>
+            <p className="label text-gold">The Design</p>
+            <p className="mt-5 max-w-xl text-[0.98rem] leading-7 text-ink">{product.story}</p>
+            <dl className="mt-9 space-y-4 border-t border-line pt-8">
+              {product.details.map((detail) => (
+                <div key={detail.label} className="flex gap-4 text-sm">
+                  <dt className="label mt-0.5 w-32 shrink-0 text-[0.58rem] text-gold">
+                    {detail.label}
+                  </dt>
+                  <dd className="text-ink">{detail.value}</dd>
+                </div>
+              ))}
+            </dl>
+          </Reveal>
+          <Reveal delay={0.12} className="lg:pt-8">
+            <PriceBreakdown product={product} />
           </Reveal>
         </div>
       </section>
