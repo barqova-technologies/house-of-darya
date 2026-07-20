@@ -19,6 +19,10 @@ const journey = [
   { step: "Visit", text: "We arrive at your home at your chosen time, with everything you need." },
   { step: "Design", text: "You try, compare and refine. Together, we create your perfect piece." },
   { step: "Craft", text: "Expert hands craft your jewellery exclusively for you." },
+  {
+    step: "Heirloom Arrives",
+    text: "Your finished piece comes home to you, ready to begin its own story.",
+  },
 ];
 
 export default function HomeAtelierPage() {
@@ -42,12 +46,15 @@ export default function HomeAtelierPage() {
             <h1 className="display mt-6 text-[2.6rem] leading-[1.05] text-white sm:text-6xl lg:text-[4rem]">
               The House Comes <em className="font-display italic text-white/85">To You</em>
             </h1>
-            <p className="mt-7 max-w-md text-[0.98rem] leading-7 text-white/70">
-              Private jewellery consultations, where the showroom is your home.
+            <p className="mt-7 max-w-lg text-[0.98rem] leading-7 text-white/75">
+              &ldquo;Atelier&rdquo; is an artist&rsquo;s workspace. House of Darya&rsquo;s flagship
+              Home Atelier Service brings a private jewellery consultation where you are the artist,
+              and we help you craft your dream jewellery piece &mdash; for you, or for your loved
+              one.
             </p>
             <div className="mt-10">
-              <a href="#book" className="btn-gold">
-                Book an Atelier
+              <a href="#book" className="btn bg-canvas text-night hover:bg-white">
+                Book Home Atelier Service
               </a>
             </div>
           </div>
@@ -55,7 +62,7 @@ export default function HomeAtelierPage() {
       </section>
 
       <section className="grid items-stretch lg:grid-cols-2">
-        <Reveal className="relative min-h-[60svh] lg:min-h-[80svh]">
+        <Reveal className="relative aspect-[4/3] w-full sm:aspect-[16/9] lg:aspect-auto lg:min-h-[80svh]">
           <Image
             src={images.atelierLifestyle}
             alt="A consultant showing designs during a Home Atelier visit"
@@ -64,8 +71,8 @@ export default function HomeAtelierPage() {
             className="object-cover"
           />
         </Reveal>
-        <Reveal delay={0.12} className="flex items-center bg-card">
-          <div className="px-8 py-20 sm:px-14 lg:px-20">
+        <Reveal delay={0.12} className="flex items-center bg-canvas lg:bg-card">
+          <div className="px-6 py-14 sm:px-10 sm:py-16 lg:px-20 lg:py-20">
             <h2 className="display text-3xl leading-tight text-ink sm:text-4xl">
               A conversation, <br className="hidden sm:block" />
               before a collection.
@@ -105,20 +112,20 @@ export default function HomeAtelierPage() {
             </h2>
             <span className="mt-6 block h-px w-16 bg-white/40" />
             <p className="mt-7 text-[0.95rem] leading-8 text-white/80">
-              Thousands of designs.
+              Thousands of design inspirations.
               <br />
-              Certified stones.
+              Stones you could want.
               <br />
-              Metal samples.
+              In all shapes and sizes.
               <br />
-              All brought to you.
+              Currently focussed on rings and studs.
             </p>
           </Reveal>
         </div>
       </section>
 
       <section className="grid items-stretch lg:grid-cols-2">
-        <Reveal className="relative order-2 min-h-[60svh] lg:order-1 lg:min-h-[80svh]">
+        <Reveal className="relative order-2 aspect-[4/3] w-full sm:aspect-[16/9] lg:order-1 lg:aspect-auto lg:min-h-[80svh]">
           <Image
             src={images.consultationEditorial}
             alt="A family choosing a piece together at home"
@@ -127,8 +134,8 @@ export default function HomeAtelierPage() {
             className="object-cover"
           />
         </Reveal>
-        <Reveal delay={0.12} className="order-1 flex items-center bg-card lg:order-2">
-          <div className="px-8 py-20 sm:px-14 lg:px-20">
+        <Reveal delay={0.12} className="order-1 flex items-center bg-canvas lg:bg-card lg:order-2">
+          <div className="px-6 py-14 sm:px-10 sm:py-16 lg:px-20 lg:py-20">
             <h2 className="display text-3xl leading-tight text-ink sm:text-4xl">
               Because jewellery is rarely chosen alone.
             </h2>
@@ -144,9 +151,11 @@ export default function HomeAtelierPage() {
         <div className="shell py-24 lg:py-28">
           <Reveal className="text-center">
             <p className="label text-white/70">The Journey</p>
-            <h2 className="display mt-4 text-3xl italic text-white sm:text-4xl">Heirloom Arrives</h2>
+            <h2 className="display mt-4 text-3xl italic text-white sm:text-4xl">
+              The Journey to your precious
+            </h2>
           </Reveal>
-          <div className="mt-16 grid gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-5">
+          <div className="mt-16 grid gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
             {journey.map((item, i) => (
               <Reveal key={item.step} delay={i * 0.08} className="relative text-center">
                 <span className="mx-auto flex h-10 w-10 items-center justify-center rounded-full border border-white/45 font-display text-sm italic text-white/85">
@@ -196,8 +205,8 @@ export default function HomeAtelierPage() {
               Choose a day. <em className="italic text-gold">We&rsquo;ll bring the house.</em>
             </h2>
             <p className="mt-6 max-w-md text-[0.95rem] leading-7 text-mist">
-              Complimentary. Private. One hour. No obligation. Share your details and our concierge
-              will confirm your visit.
+              Complimentary. Private. No obligation. Share your details and our concierge will
+              confirm your visit.
             </p>
             <div className="mt-10 space-y-5 border-t border-line pt-8 text-sm text-mist">
               <p className="flex gap-4">

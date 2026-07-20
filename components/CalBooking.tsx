@@ -58,11 +58,19 @@ export function CalBooking() {
     Cal.ns["home-atelier"]("inline", {
       elementOrSelector: "#cal-home-atelier",
       calLink: site.calLink,
-      layout: "month_view",
+      config: { layout: "month_view", theme: "light" },
     });
     Cal.ns["home-atelier"]("ui", {
+      theme: "light",
       hideEventTypeDetails: false,
       layout: "month_view",
+      cssVarsPerTheme: {
+        light: {
+          "cal-brand": "#361824",
+          "cal-text-emphasis": "#2b1a1d",
+          "cal-border-emphasis": "#361824",
+        },
+      },
     });
     /* eslint-enable */
   }, []);

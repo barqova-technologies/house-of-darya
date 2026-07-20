@@ -46,8 +46,7 @@ export default async function CollectionPage({
             <span className="text-gold">{collection.name}</span>
           </nav>
           <h1 className="display mt-6 text-4xl text-ink sm:text-5xl">{collection.name}</h1>
-          <p className="mt-2 label text-[0.62rem] text-gold">{collection.subtext}</p>
-          <p className="mt-4 font-display text-xl italic text-gold">{collection.tagline}</p>
+          <p className="mt-3 label text-[0.62rem] text-gold">{collection.subtext}</p>
           <p className="mt-5 text-[0.95rem] leading-7 text-mist">{collection.description}</p>
         </Reveal>
       </section>

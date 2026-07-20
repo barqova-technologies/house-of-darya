@@ -13,10 +13,10 @@ export const images = {
   settingHigh: `${base}/site/setting-high.jpg`,
   settingLow: `${base}/site/setting-low.jpg`,
   customizer: {
-    yellow: `${base}/products/ava/yellow-top.jpg`,
-    white: `${base}/products/ava/white-top.jpg`,
-    rose: `${base}/products/ava/rose-top.jpg`,
-    platinum: `${base}/products/ava/white-top.jpg`,
-    gemstone: `${base}/products/signature-sapphire-studs/yellow-top.jpg`,
+    yellow: `${base}/products/florence/yellow-top.jpg`,
+    white: `${base}/products/florence/white-top.jpg`,
+    rose: `${base}/products/florence/rose-top.jpg`,
+    platinum: `${base}/products/florence/white-top.jpg`,
+    gemstone: `${base}/products/viola/yellow-top.jpg`,
   },
 } as const;

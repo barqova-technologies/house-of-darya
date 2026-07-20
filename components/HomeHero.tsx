@@ -24,8 +24,8 @@ export function HomeHero() {
           sizes="100vw"
           className="object-cover object-[70%_center]"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-canvas via-canvas/72 to-canvas/15" />
-        <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-canvas to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-r from-canvas from-15% via-canvas/55 via-50% to-transparent to-80%" />
+        <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-canvas/90 to-transparent" />
       </motion.div>
 
       <div className="shell relative z-10 flex min-h-svh flex-col justify-center pb-24 pt-32">
@@ -36,7 +36,7 @@ export function HomeHero() {
             transition={{ duration: 0.8, delay: 0.1, ease }}
             className="label text-gold"
           >
-            Made-to-Order Fine Jewellery · Lucknow
+            Made-to-Order Fine Jewellery
           </motion.p>
           <motion.h1
             initial={{ opacity: 0, y: 24 }}
@@ -50,11 +50,16 @@ export function HomeHero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.9, delay: 0.45, ease }}
-            className="mt-7 max-w-md text-[0.97rem] leading-7 text-mist"
+            className="mt-7 max-w-md"
           >
-            Every House of Darya piece is 100% made-to-order: rings, ceremonial bands and
-            solitaire studs in every metal, designed in conversation with you. Try over 9,000
-            designs at home with our Home Atelier.
+            <span className="block text-[1.05rem] font-medium leading-7 text-ink">
+              Some jewellery is made to be sold. Ours is made to be yours.
+            </span>
+            <span className="mt-4 block text-[0.95rem] leading-7 text-mist">
+              Discover thoughtfully designed signature collections or commission a piece through our
+              Home Atelier. Every House of Darya creation is personalised with intention, crafted
+              with complete transparency, and made to become part of your story.
+            </span>
           </motion.p>
           <motion.div
             initial={{ opacity: 0, y: 20 }}

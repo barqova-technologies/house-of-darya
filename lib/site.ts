@@ -9,7 +9,7 @@ export const site = {
   whatsapp: "https://wa.me/915220000000?text=Hello%20House%20of%20Darya%2C%20I%20would%20like%20to%20know%20more%20about%20the%20Home%20Atelier.",
   email: "atelier@houseofdarya.com",
   instagram: "https://instagram.com/houseofdarya",
-  calLink: process.env.NEXT_PUBLIC_CAL_LINK ?? "",
+  calLink: process.env.NEXT_PUBLIC_CAL_LINK ?? "house-of-darya-6og9do/home-atelier-visit",
 };
 
 export const trustMarks = [
@@ -18,4 +18,8 @@ export const trustMarks = [
   { title: "IGI Certified", note: "Diamonds & gemstones, independently graded" },
   { title: "Natural Diamonds", note: "Earth eternal brilliance" },
   { title: "Lab-Grown Diamonds", note: "Identical fire, modern provenance" },
+  {
+    title: "Lifetime Buyback & Exchange",
+    note: "100% value on gold + up to 80% value in diamonds*",
+  },
 ];

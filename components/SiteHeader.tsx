@@ -68,7 +68,7 @@ export function SiteHeader() {
           />
         </button>
 
-        <Logo className="h-10 w-auto justify-self-center sm:h-11" />
+        <Logo className="h-12 w-auto justify-self-center sm:h-14" />
 
         <div className="hidden flex-col items-end justify-self-end lg:flex">
           <Link href="/home-atelier#book" className="btn-gold !px-6 !py-3">

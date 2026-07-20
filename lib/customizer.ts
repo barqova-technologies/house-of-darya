@@ -1,7 +1,7 @@
 import { images } from "@/lib/images";
-import type { MetalColor, Product } from "@/lib/products";
+import { productImage, type MetalColor, type Product } from "@/lib/products";
 
-export type StoneId = "natural" | "lab-grown";
+export type StoneId = "natural" | "lab-grown" | "gemstone";
 export type MetalId = "gold-18k" | "gold-14k" | "gold-9k" | "silver-925";
 export type MetalColorId = "yellow" | "white" | "rose";
 export type CaratId = "0.50" | "0.70" | "1.00" | "1.50" | "2.00";
@@ -23,6 +23,14 @@ export const stones: { id: StoneId; name: string; note: string; certification: s
     certification: "IGI Certified",
     baseFrom: 65000,
     baseTo: 95000,
+  },
+  {
+    id: "gemstone",
+    name: "Coloured Gemstone",
+    note: "Sapphire, emerald or ruby, chosen for depth of colour",
+    certification: "IGI Certified",
+    baseFrom: 85000,
+    baseTo: 140000,
   },
 ];
 
@@ -58,20 +66,26 @@ export const carats: { id: CaratId; name: string; note: string; factor: number }
   { id: "2.00", name: "2.00 carat", note: "A rare statement", factor: 5.4 },
 ];
 
-export const birthstoneMonths = [
-  "January · Garnet",
-  "February · Amethyst",
-  "March · Aquamarine",
-  "April · Diamond",
-  "May · Emerald",
-  "June · Pearl",
-  "July · Ruby",
-  "August · Peridot",
-  "September · Sapphire",
-  "October · Opal",
-  "November · Citrine",
-  "December · Tanzanite",
+export type Birthstone = { month: string; stone: string; image: string };
+
+export const birthstones: Birthstone[] = [
+  { month: "January", stone: "Garnet", image: "/images/birthstone/january.jpg" },
+  { month: "February", stone: "Amethyst", image: "/images/birthstone/february.jpg" },
+  { month: "March", stone: "Aquamarine", image: "/images/birthstone/march.jpg" },
+  { month: "April", stone: "Diamond", image: "/images/birthstone/april.jpg" },
+  { month: "May", stone: "Emerald", image: "/images/birthstone/may.jpg" },
+  { month: "June", stone: "Pearl", image: "/images/birthstone/june.jpg" },
+  { month: "July", stone: "Ruby", image: "/images/birthstone/july.jpg" },
+  { month: "August", stone: "Peridot", image: "/images/birthstone/august.jpg" },
+  { month: "September", stone: "Sapphire", image: "/images/birthstone/september.jpg" },
+  { month: "October", stone: "Opal", image: "/images/birthstone/october.jpg" },
+  { month: "November", stone: "Citrine", image: "/images/birthstone/november.jpg" },
+  { month: "December", stone: "Tanzanite", image: "/images/birthstone/december.jpg" },
 ];
+
+export function getBirthstone(month: string) {
+  return birthstones.find((b) => b.month === month);
+}
 
 export type Selection = {
   stone: StoneId;
@@ -98,6 +112,7 @@ export const MAKING_CHARGE = 5400;
 const diamondPerCarat: Record<StoneId, Record<QualityId, number>> = {
   natural: { "si-hi": 95000, "vs-ef": 130000 },
   "lab-grown": { "si-hi": 22000, "vs-ef": 32000 },
+  gemstone: { "si-hi": 48000, "vs-ef": 68000 },
 };
 
 const metalValue: Record<MetalId, number> = {
@@ -125,8 +140,9 @@ function imageColour(colour: MetalColorId): MetalColor {
 
 export function selectionImage(s: Selection, product?: Product) {
   const colour = imageColour(s.colour);
+  if (s.stone === "gemstone") return images.customizer.gemstone;
   if (product) {
-    return product.metals[colour][0] ?? product.metals.yellow[0];
+    return productImage(product, colour);
   }
   return images.customizer[colour];
 }
@@ -141,7 +157,8 @@ export function describeSelection(s: Selection) {
     `${s.carat} ct ${stone.name} (${quality.name})`,
     metalLabel,
   ];
-  if (s.birthstone) parts.push(`Hidden birthstone: ${s.birthstone}`);
+  const birthstone = getBirthstone(s.birthstone);
+  if (birthstone) parts.push(`Hidden birthstone: ${birthstone.month} · ${birthstone.stone}`);
   if (s.inscription) parts.push(`Inscription: “${s.inscription}”`);
   return parts.join(" · ");
 }

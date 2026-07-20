@@ -17,8 +17,8 @@ export default function CollectionsPage() {
       <section className="shell pb-14 pt-24 lg:pt-28">
         <SectionHeading
           eyebrow="The Collections"
-          title="Where your piece begins"
-          intro="Made-to-order collections for rings and earrings, each a different temperament. Choose the one that feels like you, then change everything about it."
+          title="Pieces our clients have crafted"
+          intro="Curated into collections inspired by the intentions behind the people who first crafted them. Take inspiration from what feels like you, then make it your own."
         />
       </section>
       <section className="shell pb-24 lg:pb-32">
@@ -44,9 +44,9 @@ export default function CollectionsPage() {
         ))}
         <Reveal className="mt-20 text-center">
           <p className="font-display text-xl italic text-mist">
-            Prefer to see them in person?{" "}
+            Want to start your own journey of crafting your dream jewellery at home?{" "}
             <Link href="/home-atelier" className="text-gold underline-offset-4 hover:underline">
-              The Home Atelier brings all 9,000+ designs to you.
+              The Home Atelier brings thousands of design inspirations to you.
             </Link>
           </p>
         </Reveal>

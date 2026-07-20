@@ -2,10 +2,9 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import {
-  birthstoneMonths,
   carats,
   computePrice,
   defaultSelection,
@@ -20,6 +19,7 @@ import {
 } from "@/lib/customizer";
 import { formatPrice, type Product } from "@/lib/products";
 import { EnquiryForm } from "@/components/EnquiryForm";
+import { BirthstonePicker } from "@/components/BirthstonePicker";
 
 function OptionGroup({
   step,
@@ -33,7 +33,7 @@ function OptionGroup({
   children: React.ReactNode;
 }) {
   return (
-    <section className="border-t border-line py-10 first:border-t-0 first:pt-0">
+    <section className="border-t border-line py-10">
       <div className="flex items-baseline gap-4">
         <span className="font-display text-lg italic text-gold">{step}</span>
         <div>
@@ -93,112 +93,72 @@ export function Customizer({ product }: { product?: Product }) {
 
   const price = useMemo(() => computePrice(selection), [selection]);
   const image = selectionImage(selection, product);
-
-  const priceCardRef = useRef<HTMLDivElement>(null);
-  const [showBar, setShowBar] = useState(false);
-  useEffect(() => {
-    const el = priceCardRef.current;
-    if (!el) return;
-    const io = new IntersectionObserver(([entry]) => setShowBar(!entry.isIntersecting), {
-      threshold: 0,
-    });
-    io.observe(el);
-    return () => io.disconnect();
-  }, []);
   const summary = describeSelection(selection);
   const stone = stones.find((s) => s.id === selection.stone)!;
   const activeMetal = metals.find((m) => m.id === selection.metal)!;
   const activeColours = metalColours.filter((c) => activeMetal.colours.includes(c.id));
 
   return (
-    <div className="grid gap-14 pb-24 lg:grid-cols-[1fr_1.1fr] lg:gap-20 lg:pb-0">
-      <div className="flex flex-col lg:sticky lg:top-24 lg:self-start">
+    <div className="grid gap-10 lg:grid-cols-2 lg:items-start lg:gap-14">
+      <div className="lg:sticky lg:top-24">
+        <div className="relative aspect-square w-full overflow-hidden bg-veil">
+          <AnimatePresence mode="popLayout">
+            <motion.div
+              key={image}
+              initial={{ opacity: 0, scale: 1.02 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.6, ease: "easeOut" }}
+              className="absolute inset-0"
+            >
+              <Image
+                src={image}
+                alt={product ? `${product.name} design preview` : "Your design preview"}
+                fill
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                className="object-cover"
+                priority
+              />
+            </motion.div>
+          </AnimatePresence>
+        </div>
+      </div>
+
+      <div className="min-w-0">
+        <div className="sticky top-20 z-20 flex items-baseline justify-between gap-4 border-b border-line bg-canvas/95 py-4 backdrop-blur-md">
+          <p className="label text-[0.58rem] text-gold">Indicative Price</p>
+          <AnimatePresence mode="wait">
+            <motion.p
+              key={price.total}
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -6 }}
+              transition={{ duration: 0.3 }}
+              className="display text-2xl text-ink"
+            >
+              {formatPrice(price.total)}
+            </motion.p>
+          </AnimatePresence>
+        </div>
+
         {product && (
-          <div className="order-1 mb-4 flex items-baseline justify-between gap-4 border border-line bg-card px-5 py-3">
-            <div>
-              <p className="label text-[0.58rem] text-gold">Customising</p>
-              <p className="display mt-1 text-xl text-ink">
-                {product.name}
-                <span className="ml-3 text-[0.65rem] font-body uppercase tracking-[0.18em] text-mist">
-                  {product.style}
-                </span>
-              </p>
-            </div>
+          <div className="py-8">
+            <h2 className="display text-3xl text-ink sm:text-4xl">{product.name}</h2>
+            <p className="mt-2 text-[0.7rem] uppercase tracking-[0.2em] text-mist">
+              {product.style}
+            </p>
+            <p className="mt-5 text-[0.95rem] leading-7 text-mist">{product.description}</p>
             <Link
               href={`/jewellery/${product.slug}`}
-              className="shrink-0 text-[0.6rem] uppercase tracking-[0.18em] text-mist transition-colors hover:text-gold"
+              className="mt-5 inline-block text-[0.6rem] uppercase tracking-[0.18em] text-gold underline-offset-4 hover:underline"
             >
               View design
             </Link>
           </div>
         )}
-        <div ref={priceCardRef} className="order-2 overflow-hidden border border-line bg-card">
-          <div className="relative h-64 w-full border-b border-line bg-veil sm:h-72 lg:h-64">
-            <AnimatePresence mode="popLayout">
-              <motion.div
-                key={image}
-                initial={{ opacity: 0, scale: 1.03 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.7, ease: "easeOut" }}
-                className="absolute inset-0"
-              >
-                <Image
-                  src={image}
-                  alt={product ? `${product.name} design preview` : "Your design preview"}
-                  fill
-                  sizes="(max-width: 1024px) 100vw, 45vw"
-                  className="object-contain"
-                  priority
-                />
-              </motion.div>
-            </AnimatePresence>
-          </div>
-          <div className="px-7 py-6">
-            <p className="label text-[0.6rem] text-gold">Indicative Price</p>
-            <AnimatePresence mode="wait">
-              <motion.p
-                key={price.total}
-                initial={{ opacity: 0, y: 6 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -6 }}
-                transition={{ duration: 0.3 }}
-                className="display mt-2 text-3xl text-ink"
-              >
-                {formatPrice(price.total)}
-              </motion.p>
-            </AnimatePresence>
-            <dl className="mt-5 space-y-2 border-t border-line pt-4 text-xs text-mist">
-              <div className="flex items-center justify-between gap-4">
-                <dt>Centre stone ({selection.carat} ct)</dt>
-                <dd className="text-ink">{formatPrice(price.diamond)}</dd>
-              </div>
-              <div className="flex items-center justify-between gap-4">
-                <dt>Metal &amp; setting</dt>
-                <dd className="text-ink">{formatPrice(price.metal)}</dd>
-              </div>
-              {price.birthstone > 0 && (
-                <div className="flex items-center justify-between gap-4">
-                  <dt>Hidden birthstone</dt>
-                  <dd className="text-ink">{formatPrice(price.birthstone)}</dd>
-                </div>
-              )}
-              <div className="flex items-center justify-between gap-4">
-                <dt>Making charge</dt>
-                <dd className="text-ink">{formatPrice(price.making)}</dd>
-              </div>
-            </dl>
-            <p className="mt-4 border-t border-line pt-4 text-xs leading-5 text-mist">
-              Indicative for your selections; confirmed at consultation against the exact stone you
-              choose. {stone.certification}.
-            </p>
-          </div>
-        </div>
-      </div>
 
-      <div>
         <OptionGroup step="I" title="Choose your stone" note="Diamonds and gemstones alike are IGI certified and shown to you before they are set.">
-          <div className="grid gap-3 sm:grid-cols-2">
+          <div className="grid gap-3 sm:grid-cols-3">
             {stones.map((s) => (
               <ChoiceButton
                 key={s.id}
@@ -266,7 +226,7 @@ export function Customizer({ product }: { product?: Product }) {
           )}
         </OptionGroup>
 
-        <OptionGroup step="III" title="Set your carat weight" note="The live price above updates with every choice, so it is always in view.">
+        <OptionGroup step="III" title="Set your carat weight" note="The price above updates with every choice and stays with you as you scroll.">
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {carats.map((c) => (
               <ChoiceButton
@@ -287,20 +247,11 @@ export function Customizer({ product }: { product?: Product }) {
         >
           <div className="grid gap-5 sm:grid-cols-2">
             <div>
-              <label className="field-label" htmlFor="birthstone">Hidden Birthstone</label>
-              <select
-                id="birthstone"
-                className="field"
+              <span className="field-label">Hidden Birthstone</span>
+              <BirthstonePicker
                 value={selection.birthstone}
-                onChange={(e) => set("birthstone", e.target.value)}
-              >
-                <option value="">None</option>
-                {birthstoneMonths.map((m) => (
-                  <option key={m} value={m}>
-                    {m}
-                  </option>
-                ))}
-              </select>
+                onChange={(month) => set("birthstone", month)}
+              />
             </div>
             <div>
               <label className="field-label" htmlFor="inscription">Inscription (complimentary)</label>
@@ -316,9 +267,50 @@ export function Customizer({ product }: { product?: Product }) {
           </div>
         </OptionGroup>
 
-        <section className="border-t border-line pt-10" id="complete">
+        <section className="border-t border-line py-10">
           <div className="flex items-baseline gap-4">
             <span className="font-display text-lg italic text-gold">V</span>
+            <div>
+              <h3 className="display text-xl text-ink">Price break-up</h3>
+              <p className="mt-1 text-sm leading-6 text-mist">
+                Exactly what makes up your price, itemised.
+              </p>
+            </div>
+          </div>
+          <dl className="mt-7 space-y-3 text-sm text-mist">
+            <div className="flex items-center justify-between gap-4">
+              <dt>Centre stone ({selection.carat} ct)</dt>
+              <dd className="text-ink">{formatPrice(price.diamond)}</dd>
+            </div>
+            <div className="flex items-center justify-between gap-4">
+              <dt>Metal &amp; setting</dt>
+              <dd className="text-ink">{formatPrice(price.metal)}</dd>
+            </div>
+            {price.birthstone > 0 && (
+              <div className="flex items-center justify-between gap-4">
+                <dt>Hidden birthstone</dt>
+                <dd className="text-ink">{formatPrice(price.birthstone)}</dd>
+              </div>
+            )}
+            <div className="flex items-center justify-between gap-4">
+              <dt>Making charge</dt>
+              <dd className="text-ink">{formatPrice(price.making)}</dd>
+            </div>
+          </dl>
+          <div className="mt-5 flex items-baseline justify-between gap-4 border-t border-line pt-5">
+            <p className="label text-[0.6rem] text-gold">Indicative Total</p>
+            <p className="display text-2xl text-ink">{formatPrice(price.total)}</p>
+          </div>
+          <p className="mt-4 text-xs leading-5 text-mist">
+            Indicative for your selections; confirmed at consultation against the exact stone you
+            choose. {stone.certification}.
+          </p>
+          <p className="mt-3 border-t border-line pt-3 text-xs leading-6 text-mist">{summary}</p>
+        </section>
+
+        <section className="border-t border-line pt-10" id="complete">
+          <div className="flex items-baseline gap-4">
+            <span className="font-display text-lg italic text-gold">VI</span>
             <div>
               <h3 className="display text-xl text-ink">See it before it exists</h3>
               <p className="mt-1 text-sm leading-6 text-mist">
@@ -334,27 +326,6 @@ export function Customizer({ product }: { product?: Product }) {
             />
           </div>
         </section>
-      </div>
-
-      <div
-        className={`fixed inset-x-0 bottom-0 z-40 border-t border-line bg-canvas/95 backdrop-blur-md transition-transform duration-300 lg:hidden ${
-          showBar ? "translate-y-0" : "translate-y-full"
-        }`}
-      >
-        <div className="shell flex items-center justify-between gap-4 py-3 pr-20">
-          <div>
-            <p className="label text-[0.52rem] text-gold">Indicative Price</p>
-            <p className="display text-xl leading-tight text-ink">
-              {formatPrice(price.total)}
-            </p>
-          </div>
-          <a
-            href="#complete"
-            className="text-[0.6rem] uppercase tracking-[0.16em] text-gold underline-offset-4 hover:underline"
-          >
-            Enquire ↓
-          </a>
-        </div>
       </div>
     </div>
   );
