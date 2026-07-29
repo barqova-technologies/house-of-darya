@@ -1,3 +1,5 @@
+import { priceRangeFor } from "@/lib/pricing";
+
 export type CollectionSlug =
   | "modern-elegant"
   | "classic-designer"
@@ -1237,4 +1239,8 @@ export function formatPrice(value: number) {
 
 export function formatRange(from: number, to: number) {
   return `${formatPrice(from)} – ${formatPrice(to)}`;
+}
+
+export function productPriceRange(p: Product, gold24k?: number) {
+  return priceRangeFor(p.slug, gold24k) ?? { from: p.priceFrom, to: p.priceTo };
 }

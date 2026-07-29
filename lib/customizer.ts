@@ -107,19 +107,26 @@ export const defaultSelection: Selection = {
   inscription: "",
 };
 
-export const MAKING_CHARGE = 5400;
-
+// Centre-stone rate ₹/carat, aligned to the client sheet (lab EF-VS solitaire round
+// = 22000). Natural is a multiple of lab; gemstone uses the coloured-diamond band.
 const diamondPerCarat: Record<StoneId, Record<QualityId, number>> = {
-  natural: { "si-hi": 95000, "vs-ef": 130000 },
-  "lab-grown": { "si-hi": 22000, "vs-ef": 32000 },
-  gemstone: { "si-hi": 48000, "vs-ef": 68000 },
+  natural: { "si-hi": 63000, "vs-ef": 77000 },
+  "lab-grown": { "si-hi": 18000, "vs-ef": 22000 },
+  gemstone: { "si-hi": 24000, "vs-ef": 28000 },
 };
 
-const metalValue: Record<MetalId, number> = {
-  "gold-18k": 45000,
-  "gold-14k": 36000,
-  "gold-9k": 26000,
-  "silver-925": 4000,
+// A designed-from-scratch piece is estimated on a nominal setting weight; the
+// catalogue products use their exact per-design weights from lib/specs.ts.
+const NOMINAL_GRAMS = 3;
+const GOLD_24K_PER_GRAM = 9700;
+const SILVER_PER_GRAM = 95;
+const MAKING_GOLD = 1300;
+const MAKING_SILVER = 800;
+const PURITY: Record<MetalId, number> = {
+  "gold-18k": 0.75,
+  "gold-14k": 0.585,
+  "gold-9k": 0.375,
+  "silver-925": 0,
 };
 
 const round = (n: number) => Math.round(n / 100) * 100;
@@ -127,8 +134,9 @@ const round = (n: number) => Math.round(n / 100) * 100;
 export function computePrice(s: Selection) {
   const caratWeight = parseFloat(s.carat);
   const diamond = round(diamondPerCarat[s.stone][s.quality] * caratWeight);
-  const metal = metalValue[s.metal];
-  const making = MAKING_CHARGE;
+  const isSilver = s.metal === "silver-925";
+  const metal = round(NOMINAL_GRAMS * (isSilver ? SILVER_PER_GRAM : GOLD_24K_PER_GRAM * PURITY[s.metal]));
+  const making = round(NOMINAL_GRAMS * (isSilver ? MAKING_SILVER : MAKING_GOLD));
   const birthstone = s.birthstone ? 9000 : 0;
   const total = diamond + metal + making + birthstone;
   return { diamond, metal, making, birthstone, total };

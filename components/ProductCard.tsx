@@ -1,9 +1,17 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { Product } from "@/lib/products";
-import { formatPrice, productHover, productImage } from "@/lib/products";
+import { formatPrice, productHover, productImage, productPriceRange } from "@/lib/products";
 
-export function ProductCard({ product, priority = false }: { product: Product; priority?: boolean }) {
+export function ProductCard({
+  product,
+  priority = false,
+  goldRate,
+}: {
+  product: Product;
+  priority?: boolean;
+  goldRate?: number;
+}) {
   return (
     <Link href={`/jewellery/${product.slug}`} className="group block">
       <div className="relative aspect-square overflow-hidden bg-veil">
@@ -28,7 +36,7 @@ export function ProductCard({ product, priority = false }: { product: Product; p
           {product.name}
         </h3>
         <p className="mt-1 text-[0.72rem] uppercase tracking-[0.18em] text-mist">{product.style}</p>
-        <p className="mt-2 text-sm text-gold">From {formatPrice(product.priceFrom)}</p>
+        <p className="mt-2 text-sm text-gold">From {formatPrice(productPriceRange(product, goldRate).from)}</p>
       </div>
     </Link>
   );

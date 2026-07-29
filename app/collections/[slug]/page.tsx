@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { ProductCard } from "@/components/ProductCard";
 import { Reveal } from "@/components/Reveal";
 import { collections, getCollection, getProductsByCollection } from "@/lib/products";
+import { getGoldRate } from "@/lib/goldRate";
 import { site } from "@/lib/site";
 
 export function generateStaticParams() {
@@ -31,6 +32,7 @@ export default async function CollectionPage({
   const collection = getCollection((await params).slug);
   if (!collection) notFound();
   const items = getProductsByCollection(collection.slug);
+  const goldRate = await getGoldRate();
 
   return (
     <>
@@ -55,7 +57,7 @@ export default async function CollectionPage({
           <div className="grid grid-cols-2 gap-x-5 gap-y-12 lg:grid-cols-4">
             {items.map((product, i) => (
               <Reveal key={product.slug} delay={(i % 4) * 0.07}>
-                <ProductCard product={product} priority={i < 4} />
+                <ProductCard product={product} priority={i < 4} goldRate={goldRate} />
               </Reveal>
             ))}
           </div>
