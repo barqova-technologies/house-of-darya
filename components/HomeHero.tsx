@@ -24,7 +24,7 @@ export function HomeHero() {
           sizes="100vw"
           className="object-cover object-[70%_center]"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-canvas from-15% via-canvas/55 via-50% to-transparent to-80%" />
+        <div className="absolute inset-0 bg-gradient-to-r from-canvas from-30% via-canvas/95 via-65% to-canvas/50 to-100% lg:from-canvas lg:from-15% lg:via-canvas/55 lg:via-50% lg:to-transparent lg:to-80%" />
         <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-canvas/90 to-transparent" />
       </motion.div>
 
@@ -55,7 +55,7 @@ export function HomeHero() {
             <span className="block text-[1.05rem] font-medium leading-7 text-ink">
               Some jewellery is made to be sold. Ours is made to be yours.
             </span>
-            <span className="mt-4 block text-[0.95rem] leading-7 text-mist">
+            <span className="mt-4 block text-[0.95rem] leading-7 text-ink/70">
               Discover thoughtfully designed signature collections or commission a piece through our
               Home Atelier. Every House of Darya creation is personalised with intention, crafted
               with complete transparency, and made to become part of your story.
@@ -81,7 +81,7 @@ export function HomeHero() {
             className="mt-12 flex flex-wrap gap-x-7 gap-y-2"
           >
             {["HUID Hallmarked", "IGI Certified Diamonds"].map((mark) => (
-              <span key={mark} className="text-[0.62rem] uppercase tracking-[0.22em] text-mist">
+              <span key={mark} className="text-[0.62rem] uppercase tracking-[0.22em] text-ink/60">
                 {mark}
               </span>
             ))}

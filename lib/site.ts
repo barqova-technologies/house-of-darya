@@ -2,7 +2,7 @@ export const site = {
   name: "House of Darya",
   tagline: "Made-to-Order Fine Jewellery",
   description:
-    "100% made-to-order customized diamond and gemstone jewellery. Try 9000+ solitaire designs at home with our Home Atelier service in Lucknow. HUID hallmarked, IGI certified.",
+    "100% made-to-order customized diamond and gemstone jewellery. Try 9000+ solitaire designs at home with our Home Atelier service. HUID hallmarked, IGI certified.",
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://houseofdarya.barqova.com",
   city: "Lucknow",
   phone: "+91 88080 11818",

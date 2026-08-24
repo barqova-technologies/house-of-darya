@@ -8,7 +8,7 @@ export function Logo({ className = "h-14 w-auto" }: { className?: string }) {
         src="/logo.png"
         alt="House of Darya"
         width={748}
-        height={304}
+        height={373}
         priority
         className={className}
       />

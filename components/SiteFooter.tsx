@@ -16,7 +16,7 @@ export function SiteFooter() {
           <Logo className="h-12 w-auto" />
           <p className="max-w-xs text-sm leading-6 text-mist">
             100% made-to-order diamond and gemstone jewellery, designed with you and crafted for
-            you alone. Home Atelier service in {site.city}.
+            you alone. Home Atelier service, by appointment.
           </p>
         </div>
         <div>
@@ -81,7 +81,7 @@ export function SiteFooter() {
       <div className="hairline" />
       <div className="shell flex flex-col items-center justify-between gap-3 py-7 text-[0.68rem] uppercase tracking-[0.2em] text-mist sm:flex-row">
         <span>© {new Date().getFullYear()} {site.name}</span>
-        <span>Made-to-Order Fine Jewellery · {site.city}</span>
+        <span>Made-to-Order Fine Jewellery</span>
         <span>
           Crafted by{" "}
           <a

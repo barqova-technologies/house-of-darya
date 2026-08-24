@@ -7,9 +7,14 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Logo } from "@/components/Logo";
 
 const navItems = [
+  { href: "/", label: "Home" },
   { href: "/collections", label: "Collections" },
   { href: "/home-atelier", label: "Home Atelier" },
 ];
+
+function isNavItemActive(pathname: string, href: string) {
+  return href === "/" ? pathname === "/" : pathname.startsWith(href);
+}
 
 export function SiteHeader() {
   const [scrolled, setScrolled] = useState(false);
@@ -47,7 +52,7 @@ export function SiteHeader() {
               key={item.href}
               href={item.href}
               className={`text-[0.7rem] font-medium uppercase tracking-[0.22em] transition-colors duration-300 hover:text-gold ${
-                pathname.startsWith(item.href) ? "text-gold" : "text-ink"
+                isNavItemActive(pathname, item.href) ? "text-gold" : "text-ink"
               }`}
             >
               {item.label}

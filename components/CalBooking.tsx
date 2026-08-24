@@ -54,6 +54,7 @@ export function CalBooking() {
     })(window, "https://app.cal.com/embed/embed.js", "init");
 
     const Cal = (window as any).Cal;
+
     Cal("init", "home-atelier", { origin: "https://cal.com" });
     Cal.ns["home-atelier"]("inline", {
       elementOrSelector: "#cal-home-atelier",
@@ -62,7 +63,7 @@ export function CalBooking() {
     });
     Cal.ns["home-atelier"]("ui", {
       theme: "light",
-      hideEventTypeDetails: false,
+      hideEventTypeDetails: true,
       layout: "month_view",
       cssVarsPerTheme: {
         light: {
@@ -79,11 +80,5 @@ export function CalBooking() {
     return <EnquiryForm type="home-atelier" interestOptions={interestOptions} />;
   }
 
-  return (
-    <div
-      id="cal-home-atelier"
-      className="min-h-[560px] w-full overflow-hidden"
-      style={{ height: "100%" }}
-    />
-  );
+  return <div id="cal-home-atelier" className="min-h-[420px] w-full sm:min-h-[450px] lg:min-h-[480px]" />;
 }

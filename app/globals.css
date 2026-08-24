@@ -49,6 +49,10 @@ body {
   @apply mx-auto w-full max-w-7xl px-5 sm:px-8 lg:px-12;
 }
 
+@utility shell-wide {
+  @apply mx-auto w-full max-w-[92rem] px-5 sm:px-8 lg:px-12;
+}
+
 @utility label {
   @apply font-body text-[0.7rem] font-medium uppercase tracking-[0.28em];
 }

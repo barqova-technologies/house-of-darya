@@ -48,7 +48,7 @@ const messages: Record<Enquiry["type"], { heading: string; body: string }> = {
   },
   product: {
     heading: "Your design enquiry has reached us",
-    body: "Thank you for your interest in this design. Our consultants will contact you shortly with details, and can arrange for you to see it in person through our Home Atelier in Lucknow.",
+    body: "Thank you for your interest in this design. Our consultants will contact you shortly with details, and can arrange for you to see it in person through our Home Atelier.",
   },
 };
 
@@ -74,7 +74,7 @@ export default function CustomerAcknowledgementEmail({ enquiry }: { enquiry: Enq
               houseofdarya.com
             </Link>
           </Text>
-          <Text style={styles.footer}>Made-to-Order Fine Jewellery · Lucknow</Text>
+          <Text style={styles.footer}>Made-to-Order Fine Jewellery</Text>
         </Container>
       </Body>
     </Html>
