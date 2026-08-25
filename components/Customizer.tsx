@@ -11,6 +11,7 @@ import {
   describeSelection,
   metalColours,
   metals,
+  NOMINAL_GRAMS,
   qualities,
   selectionImage,
   stones,
@@ -113,7 +114,6 @@ export function Customizer({
     [product, summary, price.total]
   );
 
-  // Debounced so changing a selection does not reload the embedded calendar on every click.
   const [bookingNotes, setBookingNotes] = useState(designNotes);
   useEffect(() => {
     const t = setTimeout(() => setBookingNotes(designNotes), 600);
@@ -308,7 +308,9 @@ export function Customizer({
               <dd className="text-ink">{formatPrice(price.diamond)}</dd>
             </div>
             <div className="flex items-center justify-between gap-4">
-              <dt>Metal &amp; setting</dt>
+              <dt>
+                Metal &amp; setting ({NOMINAL_GRAMS} g {activeMetal.name})
+              </dt>
               <dd className="text-ink">{formatPrice(price.metal)}</dd>
             </div>
             {price.birthstone > 0 && (
@@ -318,7 +320,7 @@ export function Customizer({
               </div>
             )}
             <div className="flex items-center justify-between gap-4">
-              <dt>Making charge</dt>
+              <dt>Making charge ({NOMINAL_GRAMS} g)</dt>
               <dd className="text-ink">{formatPrice(price.making)}</dd>
             </div>
           </dl>
@@ -327,8 +329,8 @@ export function Customizer({
             <p className="display text-2xl text-ink">{formatPrice(price.total)}</p>
           </div>
           <p className="mt-4 text-xs leading-5 text-mist">
-            Indicative for your selections; confirmed at consultation against the exact stone you
-            choose. {stone.certification}.
+            Based on an indicative {NOMINAL_GRAMS} g setting weight; the final weight is confirmed
+            at consultation against the exact stone you choose. {stone.certification}.
           </p>
           <p className="mt-3 border-t border-line pt-3 text-xs leading-6 text-mist">{summary}</p>
         </section>

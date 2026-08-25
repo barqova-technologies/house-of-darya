@@ -16,9 +16,10 @@ export function PriceBreakdown({
 
   const rows = bd
     ? [
-        { label: `18kt gold & making (${bd.weight} g)`, value: formatPrice(bd.metal + bd.making) },
+        { label: `18kt gold (${bd.weight} g)`, value: formatPrice(bd.metal) },
+        { label: `Making charge (${bd.weight} g)`, value: formatPrice(bd.making) },
         ...(bd.diamond > 0
-          ? [{ label: "Certified diamonds", value: formatPrice(bd.diamond) }]
+          ? [{ label: "Certified lab-grown diamonds", value: formatPrice(bd.diamond) }]
           : []),
         { label: "Certification & hallmarking", value: "Included" },
       ]

@@ -8,21 +8,13 @@ import {
 } from "@/lib/pricing";
 import { productImage, type MetalColor, type Product } from "@/lib/products";
 
-export type StoneId = "natural" | "lab-grown" | "gemstone";
+export type StoneId = "lab-grown" | "gemstone";
 export type MetalId = "gold-18k" | "gold-14k" | "gold-9k" | "silver-925";
 export type MetalColorId = "yellow" | "white" | "rose";
 export type CaratId = "0.50" | "0.70" | "1.00" | "1.50" | "2.00";
 export type QualityId = "si-hi" | "vs-ef";
 
 export const stones: { id: StoneId; name: string; note: string; certification: string; baseFrom: number; baseTo: number }[] = [
-  {
-    id: "natural",
-    name: "Natural Diamond",
-    note: "Earth eternal brilliance, graded for cut, colour and clarity",
-    certification: "IGI Certified",
-    baseFrom: 120000,
-    baseTo: 180000,
-  },
   {
     id: "lab-grown",
     name: "Lab-Grown Diamond",
@@ -105,7 +97,7 @@ export type Selection = {
 };
 
 export const defaultSelection: Selection = {
-  stone: "natural",
+  stone: "lab-grown",
   quality: "si-hi",
   metal: "gold-18k",
   colour: "yellow",
@@ -114,17 +106,12 @@ export const defaultSelection: Selection = {
   inscription: "",
 };
 
-// Centre-stone rate ₹/carat, aligned to the client sheet (lab EF-VS solitaire round
-// = 22000). Natural is a multiple of lab; gemstone uses the coloured-diamond band.
 const diamondPerCarat: Record<StoneId, Record<QualityId, number>> = {
-  natural: { "si-hi": 63000, "vs-ef": 77000 },
   "lab-grown": { "si-hi": 18000, "vs-ef": 22000 },
   gemstone: { "si-hi": 24000, "vs-ef": 28000 },
 };
 
-// A designed-from-scratch piece is estimated on a nominal setting weight; the
-// catalogue products use their exact per-design weights from lib/specs.ts.
-const NOMINAL_GRAMS = 3;
+export const NOMINAL_GRAMS = 3;
 
 const round = (n: number) => Math.round(n / 100) * 100;
 

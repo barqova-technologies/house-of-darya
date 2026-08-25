@@ -666,6 +666,50 @@ export const products: Product[] = [
     ],
   },
   {
+    slug: "harper-emerald-wide",
+    name: "Harper",
+    collection: "modern-elegant",
+    style: "Wide Emerald Bezel Ceremonial Ring",
+    description: "The Harper bezel setting carried across a wider band, with larger emerald cuts.",
+    story:
+      "The same row of individually bezelled emerald cuts as the Harper, built on a broader band so each stone sits larger and the line reads bolder on the hand.",
+    priceFrom: 120000,
+    priceTo: 195000,
+    metals: {
+      yellow: ["/images/products/harper-emerald-wide/yellow-top.jpg", "/images/products/harper-emerald-wide/yellow-front.jpg"],
+      white: ["/images/products/harper-emerald-wide/white-top.jpg", "/images/products/harper-emerald-wide/white-front.jpg"],
+      rose: ["/images/products/harper-emerald-wide/rose-top.jpg", "/images/products/harper-emerald-wide/rose-front.jpg"],
+    },
+    lifestyle: ["/images/products/harper-emerald-wide/lifestyle-1.jpg", "/images/products/harper-emerald-wide/lifestyle-2.jpg"],
+    details: [
+      { label: "Style", value: "Wide Emerald Bezel Ceremonial Ring" },
+      { label: "Certification", value: "IGI Certified" },
+      { label: "Metals", value: "18k Yellow, White, Rose Gold" },
+    ],
+  },
+  {
+    slug: "ripple",
+    name: "Ripple",
+    collection: "modern-elegant",
+    style: "Pear-Cut Wave Band",
+    description: "Pear cuts set along a gently waving band, curving with the finger.",
+    story:
+      "Ripple lets the band move. Pear cuts follow a soft wave rather than a straight line, so the ring settles against a neighbouring band instead of sitting apart from it.",
+    priceFrom: 55000,
+    priceTo: 95000,
+    metals: {
+      yellow: ["/images/products/ripple/yellow-top.jpg", "/images/products/ripple/yellow-front.jpg"],
+      white: ["/images/products/ripple/white-top.jpg"],
+      rose: ["/images/products/ripple/rose-top.jpg"],
+    },
+    lifestyle: ["/images/products/ripple/lifestyle-1.jpg", "/images/products/ripple/lifestyle-2.jpg"],
+    details: [
+      { label: "Style", value: "Pear-Cut Wave Band" },
+      { label: "Certification", value: "IGI Certified" },
+      { label: "Metals", value: "18k Yellow, White, Rose Gold" },
+    ],
+  },
+  {
     slug: "estelle",
     name: "Estelle",
     collection: "modern-elegant",

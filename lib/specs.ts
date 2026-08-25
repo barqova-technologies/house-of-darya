@@ -1,11 +1,13 @@
-// Generated from the client price sheet. Weights in grams, stone weights in carats.
 export type DesignSpec = {
   g9: number; g14: number; g18: number; silver: number;
   smallRound: number; smallFancy: number; solRound: number; solFancy: number;
   solFancyExtra?: number; colour?: "pink" | "red" | "yellow" | "green";
+  colourScope?: "solitaire" | "all";
 };
 
 export const designSpecs: Record<string, DesignSpec> = {
+  "harper-emerald-wide": { g9: 3.32, g14: 4.0, g18: 4.6, silver: 4.0, smallRound: 0.0, smallFancy: 1.8, solRound: 0.0, solFancy: 0.0, },
+  "ripple": { g9: 2.83, g14: 3.4, g18: 3.91, silver: 3.4, smallRound: 0.0, smallFancy: 0.35, solRound: 0.0, solFancy: 0.0, },
   "ava": { g9: 1.5, g14: 1.8, g18: 2.1, silver: 1.8, smallRound: 0.4, smallFancy: 0.0, solRound: 0.0, solFancy: 0.0, },
   "arden": { g9: 1.6, g14: 1.95, g18: 2.25, silver: 1.95, smallRound: 0.25, smallFancy: 0.0, solRound: 0.0, solFancy: 0.0, },
   "skylar": { g9: 2.25, g14: 2.7, g18: 3.1, silver: 2.7, smallRound: 0.5, smallFancy: 0.0, solRound: 0.0, solFancy: 0.0, },
@@ -47,7 +49,7 @@ export const designSpecs: Record<string, DesignSpec> = {
   "six-prong-studs": { g9: 2.08, g14: 2.5, g18: 2.88, silver: 2.5, smallRound: 0.0, smallFancy: 0.0, solRound: 4.0, solFancy: 0.0, },
   "cascading-hoops": { g9: 2.49, g14: 3.0, g18: 3.45, silver: 3.0, smallRound: 1.2, smallFancy: 0.0, solRound: 0.0, solFancy: 0.0, },
   "arietta": { g9: 2.49, g14: 3.0, g18: 3.45, silver: 3.0, smallRound: 0.0, smallFancy: 0.4, solRound: 0.0, solFancy: 2.0, },
-  "tara": { g9: 1.66, g14: 2.0, g18: 2.3, silver: 2.0, smallRound: 0.0, smallFancy: 0.8, solRound: 0.0, solFancy: 0.0, colour: "pink", },
+  "tara": { g9: 1.66, g14: 2.0, g18: 2.3, silver: 2.0, smallRound: 0.0, smallFancy: 0.8, solRound: 0.0, solFancy: 0.0, colour: "pink", colourScope: "all", },
   "round-pear-jacket": { g9: 2.49, g14: 3.0, g18: 3.45, silver: 3.0, smallRound: 1.0, smallFancy: 1.2, solRound: 0.0, solFancy: 0.0, },
   "lucky-heart": { g9: 2.91, g14: 3.5, g18: 4.03, silver: 3.5, smallRound: 0.2, smallFancy: 8.0, solRound: 0.0, solFancy: 0.0, },
   "cascade-drop": { g9: 3.74, g14: 4.5, g18: 5.18, silver: 4.5, smallRound: 0.0, smallFancy: 8.0, solRound: 0.0, solFancy: 0.0, },

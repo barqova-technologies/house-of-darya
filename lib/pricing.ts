@@ -1,11 +1,8 @@
 import { designSpecs, type DesignSpec } from "@/lib/specs";
 
-// ----- Rates (from the client price sheet) -----
-// Making charges (₹ per gram)
 export const MAKING_GOLD = 1300;
 export const MAKING_SILVER = 800;
 
-// Lab-grown diamond rates, ₹ per carat (EF VS)
 const DIAMOND = {
   smallRound: 14000,
   smallFancy: 18000,
@@ -13,7 +10,6 @@ const DIAMOND = {
   solFancy: 26000,
 };
 
-// Coloured lab-grown diamond rates, ₹ per carat
 const COLOURED: Record<string, number> = {
   pink: 28000,
   red: 36000,
@@ -21,9 +17,6 @@ const COLOURED: Record<string, number> = {
   green: 24000,
 };
 
-// ----- Gold / silver metal rate -----
-// Default 24k rate when no live rate is supplied. lib/goldRate.ts resolves the
-// live/override rate on the server and passes it into the functions below.
 export const DEFAULT_GOLD_24K = 9700;
 export const DEFAULT_SILVER_PER_GRAM = 95;
 
@@ -34,11 +27,13 @@ export type PriceMetal = "gold-18k" | "gold-14k" | "gold-9k" | "silver-925";
 const round100 = (n: number) => Math.round(n / 100) * 100;
 
 function diamondValue(s: DesignSpec) {
-  const solFancyRate = s.colour ? COLOURED[s.colour] ?? DIAMOND.solFancy : DIAMOND.solFancy;
+  const coloured = s.colour ? COLOURED[s.colour] : undefined;
+  const accentsColoured = coloured !== undefined && s.colourScope === "all";
+  const solFancyRate = coloured ?? DIAMOND.solFancy;
   return (
-    s.smallRound * DIAMOND.smallRound +
-    s.smallFancy * DIAMOND.smallFancy +
-    s.solRound * DIAMOND.solRound +
+    s.smallRound * (accentsColoured ? coloured : DIAMOND.smallRound) +
+    s.smallFancy * (accentsColoured ? coloured : DIAMOND.smallFancy) +
+    s.solRound * (accentsColoured ? coloured : DIAMOND.solRound) +
     s.solFancy * solFancyRate +
     (s.solFancyExtra ?? 0) * DIAMOND.solFancy
   );

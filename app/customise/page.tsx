@@ -6,7 +6,7 @@ import { getGoldRate, getSilverRate } from "@/lib/goldRate";
 export const metadata: Metadata = {
   title: "Customise Your Jewellery - A Guided Design Journey",
   description:
-    "Design your made-to-order piece: choose IGI certified natural or lab-grown diamonds or gemstones, your metal and karat, carat weight, colour and clarity, with hidden birthstones and inscriptions. Indicative pricing, confirmed at consultation.",
+    "Design your made-to-order piece: choose IGI certified lab-grown diamonds or gemstones, your metal and karat, carat weight, colour and clarity, with hidden birthstones and inscriptions. Indicative pricing, confirmed at consultation.",
 };
 
 export default async function CustomisePage({
