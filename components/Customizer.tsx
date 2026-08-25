@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import {
   carats,
@@ -18,7 +18,7 @@ import {
   type Selection,
 } from "@/lib/customizer";
 import { formatPrice, type Product } from "@/lib/products";
-import { EnquiryForm } from "@/components/EnquiryForm";
+import { CalBooking } from "@/components/CalBooking";
 import { BirthstonePicker } from "@/components/BirthstonePicker";
 
 function OptionGroup({
@@ -94,6 +94,23 @@ export function Customizer({ product }: { product?: Product }) {
   const price = useMemo(() => computePrice(selection), [selection]);
   const image = selectionImage(selection, product);
   const summary = describeSelection(selection);
+
+  const designNotes = useMemo(
+    () =>
+      [
+        product ? `Design: ${product.name} - ${product.style} (${product.slug})` : "Custom design",
+        `Selections: ${summary}`,
+        `Indicative price: ${formatPrice(price.total)}`,
+      ].join(" | "),
+    [product, summary, price.total]
+  );
+
+  // Debounced so changing a selection does not reload the embedded calendar on every click.
+  const [bookingNotes, setBookingNotes] = useState(designNotes);
+  useEffect(() => {
+    const t = setTimeout(() => setBookingNotes(designNotes), 600);
+    return () => clearTimeout(t);
+  }, [designNotes]);
   const stone = stones.find((s) => s.id === selection.stone)!;
   const activeMetal = metals.find((m) => m.id === selection.metal)!;
   const activeColours = metalColours.filter((c) => activeMetal.colours.includes(c.id));
@@ -320,10 +337,7 @@ export function Customizer({ product }: { product?: Product }) {
             </div>
           </div>
           <div className="mt-8">
-            <EnquiryForm
-              type="home-atelier"
-              context={`${product ? `Design: ${product.name} - ${product.style} (${product.slug}) - ` : ""}Customizer selections - ${summary} - Indicative price ${formatPrice(price.total)}`}
-            />
+            <CalBooking id="customise" notes={bookingNotes} />
           </div>
         </section>
       </div>

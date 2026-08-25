@@ -16,14 +16,17 @@ npm run dev
 
 Production: `npm run build && npm start`.
 
-## Email / lead capture
+## Lead capture
 
-All forms post to one server action (`app/actions.ts`) which validates, applies a honeypot
-(silent success for bots), and calls `lib/enquiry/submitEnquiry.ts`, the single provider
-abstraction. With `RESEND_API_KEY` set (see `.env.example`) it sends an internal notification
-plus a branded customer acknowledgement (templates in `emails/`). Without a key it logs the lead
-server-side and skips sending, so the site runs without configuration. `lib/enquiry/persistEnquiry.ts`
-is the seam for a future durable store.
+There is no backend and no email provider. Leads arrive through two channels:
+
+- **Cal.com** handles anything that needs a booking: the Home Atelier visit (`/home-atelier#book`)
+  and the Customizer's final step. Cal sends the confirmation and the host notification itself.
+  The Customizer passes the current design into Cal's *Additional notes* field via the embed's
+  `notes` prefill, so a booking arrives with the selections and indicative price attached.
+- **Email, WhatsApp and phone** handle general queries, on `/contact`, `/consultation` and each
+  product page, through `components/ContactActions.tsx`. Link builders live in `lib/contact.ts`,
+  which prefills the subject and body so context is not lost.
 
 ## Images
 

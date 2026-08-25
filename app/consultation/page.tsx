@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import { Reveal } from "@/components/Reveal";
-import { EnquiryForm } from "@/components/EnquiryForm";
+import { ContactActions } from "@/components/ContactActions";
 import { images } from "@/lib/images";
 import { site } from "@/lib/site";
 
@@ -35,18 +35,12 @@ export default function ConsultationPage() {
         </div>
       </Reveal>
       <Reveal delay={0.15}>
-        <div className="border border-line bg-card p-7 sm:p-10">
-          <EnquiryForm
-            type="consultation"
-            interestOptions={[
-              "Designing a custom ring",
-              "Designing custom studs",
-              "Choosing between natural & lab-grown",
-              "A design I saw on the site",
-              "Something else entirely",
-            ]}
-          />
-        </div>
+        <ContactActions
+          emailLabel="Request a consultation"
+          subject="Private consultation request"
+          body={"Hello House of Darya,\n\nI would like to request a private consultation.\n\n"}
+          message="Hello House of Darya, I would like to request a private consultation."
+        />
       </Reveal>
     </section>
   );

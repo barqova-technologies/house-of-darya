@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Reveal } from "@/components/Reveal";
-import { EnquiryForm } from "@/components/EnquiryForm";
+import { ContactActions } from "@/components/ContactActions";
 import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -56,9 +56,11 @@ export default function ContactPage() {
         </div>
       </Reveal>
       <Reveal delay={0.15}>
-        <div className="border border-line bg-card p-7 sm:p-10">
-          <EnquiryForm type="contact" />
-        </div>
+        <ContactActions
+          subject="Enquiry for House of Darya"
+          body={"Hello House of Darya,\n\n"}
+          message="Hello House of Darya, I have a question."
+        />
       </Reveal>
     </section>
   );

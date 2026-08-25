@@ -2,17 +2,17 @@
 
 import { useEffect } from "react";
 import { site } from "@/lib/site";
-import { EnquiryForm } from "@/components/EnquiryForm";
+import { ContactActions } from "@/components/ContactActions";
 
-const interestOptions = [
-  "Solitaire Rings",
-  "Studs",
-  "Rings & Studs",
-  "A specific design I have seen",
-  "Not sure yet, guide me",
-];
+export function CalBooking({
+  id = "home-atelier",
+  notes,
+}: {
+  id?: string;
+  notes?: string;
+}) {
+  const elementId = `cal-${id}`;
 
-export function CalBooking() {
   useEffect(() => {
     if (!site.calLink) return;
     /* eslint-disable */
@@ -55,13 +55,20 @@ export function CalBooking() {
 
     const Cal = (window as any).Cal;
 
-    Cal("init", "home-atelier", { origin: "https://cal.com" });
-    Cal.ns["home-atelier"]("inline", {
-      elementOrSelector: "#cal-home-atelier",
+    const host = document.getElementById(elementId);
+    if (host) host.innerHTML = "";
+
+    Cal("init", id, { origin: "https://cal.com" });
+    Cal.ns[id]("inline", {
+      elementOrSelector: `#${elementId}`,
       calLink: site.calLink,
-      config: { layout: "month_view", theme: "light" },
+      config: {
+        layout: "month_view",
+        theme: "light",
+        ...(notes ? { notes } : {}),
+      },
     });
-    Cal.ns["home-atelier"]("ui", {
+    Cal.ns[id]("ui", {
       theme: "light",
       hideEventTypeDetails: true,
       layout: "month_view",
@@ -74,11 +81,17 @@ export function CalBooking() {
       },
     });
     /* eslint-enable */
-  }, []);
+  }, [id, elementId, notes]);
 
   if (!site.calLink) {
-    return <EnquiryForm type="home-atelier" interestOptions={interestOptions} />;
+    return (
+      <ContactActions
+        message="Hello House of Darya, I would like to book a Home Atelier visit."
+        subject="Home Atelier booking request"
+        body={"Hello House of Darya,\n\nI would like to book a Home Atelier visit.\n\n"}
+      />
+    );
   }
 
-  return <div id="cal-home-atelier" className="min-h-[420px] w-full sm:min-h-[450px] lg:min-h-[480px]" />;
+  return <div id={elementId} className="min-h-[420px] w-full sm:min-h-[450px] lg:min-h-[480px]" />;
 }

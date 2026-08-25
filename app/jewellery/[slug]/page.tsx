@@ -5,7 +5,7 @@ import { Reveal } from "@/components/Reveal";
 import { ProductCard } from "@/components/ProductCard";
 import { ProductGallery } from "@/components/ProductGallery";
 import { PriceBreakdown } from "@/components/PriceBreakdown";
-import { EnquiryForm } from "@/components/EnquiryForm";
+import { ContactActions } from "@/components/ContactActions";
 import {
   formatRange,
   getCollection,
@@ -142,9 +142,12 @@ export default async function ProductPage({
             </p>
           </Reveal>
           <Reveal delay={0.15}>
-            <div className="border border-line bg-card p-7 sm:p-10">
-              <EnquiryForm type="product" context={`${product.name} - ${product.style} (${product.slug})`} />
-            </div>
+            <ContactActions
+              emailLabel={`Enquire about the ${product.name}`}
+              subject={`Enquiry - ${product.name} (${product.style})`}
+              body={`Hello House of Darya,\n\nI am interested in the ${product.name} (${product.style}).\n\n`}
+              message={`Hello House of Darya, I am interested in the ${product.name} (${product.style}).`}
+            />
           </Reveal>
         </div>
       </section>
