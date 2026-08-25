@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Customizer } from "@/components/Customizer";
 import { getProduct } from "@/lib/products";
+import { getGoldRate, getSilverRate } from "@/lib/goldRate";
 
 export const metadata: Metadata = {
   title: "Customise Your Jewellery - A Guided Design Journey",
@@ -15,6 +16,8 @@ export default async function CustomisePage({
 }) {
   const { design } = await searchParams;
   const product = design ? getProduct(design) : undefined;
+  const goldRate = await getGoldRate();
+  const silverRate = await getSilverRate();
 
   return (
     <>
@@ -25,7 +28,7 @@ export default async function CustomisePage({
         </h1>
       </section>
       <section className="shell pb-24 lg:pb-32">
-        <Customizer product={product} />
+        <Customizer product={product} goldRate={goldRate} silverRate={silverRate} />
       </section>
     </>
   );

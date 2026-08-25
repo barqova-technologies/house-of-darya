@@ -1,4 +1,11 @@
 import { images } from "@/lib/images";
+import {
+  DEFAULT_GOLD_24K,
+  MAKING_GOLD,
+  MAKING_SILVER,
+  PURITY,
+  DEFAULT_SILVER_PER_GRAM,
+} from "@/lib/pricing";
 import { productImage, type MetalColor, type Product } from "@/lib/products";
 
 export type StoneId = "natural" | "lab-grown" | "gemstone";
@@ -118,25 +125,24 @@ const diamondPerCarat: Record<StoneId, Record<QualityId, number>> = {
 // A designed-from-scratch piece is estimated on a nominal setting weight; the
 // catalogue products use their exact per-design weights from lib/specs.ts.
 const NOMINAL_GRAMS = 3;
-const GOLD_24K_PER_GRAM = 9700;
-const SILVER_PER_GRAM = 95;
-const MAKING_GOLD = 1300;
-const MAKING_SILVER = 800;
-const PURITY: Record<MetalId, number> = {
-  "gold-18k": 0.75,
-  "gold-14k": 0.585,
-  "gold-9k": 0.375,
-  "silver-925": 0,
-};
 
 const round = (n: number) => Math.round(n / 100) * 100;
 
-export function computePrice(s: Selection) {
+export function computePrice(
+  s: Selection,
+  gold24k = DEFAULT_GOLD_24K,
+  silver = DEFAULT_SILVER_PER_GRAM
+) {
   const caratWeight = parseFloat(s.carat);
   const diamond = round(diamondPerCarat[s.stone][s.quality] * caratWeight);
-  const isSilver = s.metal === "silver-925";
-  const metal = round(NOMINAL_GRAMS * (isSilver ? SILVER_PER_GRAM : GOLD_24K_PER_GRAM * PURITY[s.metal]));
-  const making = round(NOMINAL_GRAMS * (isSilver ? MAKING_SILVER : MAKING_GOLD));
+  const metal = round(
+    s.metal === "silver-925"
+      ? NOMINAL_GRAMS * silver
+      : NOMINAL_GRAMS * gold24k * PURITY[s.metal]
+  );
+  const making = round(
+    NOMINAL_GRAMS * (s.metal === "silver-925" ? MAKING_SILVER : MAKING_GOLD)
+  );
   const birthstone = s.birthstone ? 9000 : 0;
   const total = diamond + metal + making + birthstone;
   return { diamond, metal, making, birthstone, total };

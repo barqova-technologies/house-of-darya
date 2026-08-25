@@ -1241,6 +1241,6 @@ export function formatRange(from: number, to: number) {
   return `${formatPrice(from)} – ${formatPrice(to)}`;
 }
 
-export function productPriceRange(p: Product, gold24k?: number) {
-  return priceRangeFor(p.slug, gold24k) ?? { from: p.priceFrom, to: p.priceTo };
+export function productPriceRange(p: Product, gold24k?: number, silver?: number) {
+  return priceRangeFor(p.slug, gold24k, silver) ?? { from: p.priceFrom, to: p.priceTo };
 }

@@ -79,7 +79,15 @@ function ChoiceButton({
   );
 }
 
-export function Customizer({ product }: { product?: Product }) {
+export function Customizer({
+  product,
+  goldRate,
+  silverRate,
+}: {
+  product?: Product;
+  goldRate?: number;
+  silverRate?: number;
+}) {
   const [selection, setSelection] = useState<Selection>(defaultSelection);
   const set = <K extends keyof Selection>(key: K, value: Selection[K]) =>
     setSelection((s) => ({ ...s, [key]: value }));
@@ -91,7 +99,7 @@ export function Customizer({ product }: { product?: Product }) {
       return { ...s, metal: id, colour };
     });
 
-  const price = useMemo(() => computePrice(selection), [selection]);
+  const price = useMemo(() => computePrice(selection, goldRate, silverRate), [selection, goldRate, silverRate]);
   const image = selectionImage(selection, product);
   const summary = describeSelection(selection);
 

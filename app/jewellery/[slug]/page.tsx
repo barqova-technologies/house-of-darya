@@ -14,7 +14,7 @@ import {
   productPriceRange,
   products,
 } from "@/lib/products";
-import { getGoldRate } from "@/lib/goldRate";
+import { getGoldRate, getSilverRate } from "@/lib/goldRate";
 import { site } from "@/lib/site";
 
 export function generateStaticParams() {
@@ -43,6 +43,7 @@ export default async function ProductPage({
   if (!product) notFound();
   const collection = getCollection(product.collection)!;
   const goldRate = await getGoldRate();
+  const silverRate = await getSilverRate();
   const related = getProductsByCollection(product.collection)
     .filter((p) => p.slug !== product.slug)
     .slice(0, 3);
@@ -73,7 +74,10 @@ export default async function ProductPage({
             <div className="mt-7 border-y border-line py-5">
               <p className="label text-[0.6rem] text-gold">Indicative Range</p>
               <p className="display mt-2 text-2xl text-ink">
-                {formatRange(productPriceRange(product, goldRate).from, productPriceRange(product, goldRate).to)}
+                {formatRange(
+                  productPriceRange(product, goldRate, silverRate).from,
+                  productPriceRange(product, goldRate, silverRate).to
+                )}
               </p>
               <p className="mt-2 text-xs leading-5 text-mist">
                 Varies with stone, carat and metal, confirmed at your consultation, never before.
@@ -123,7 +127,7 @@ export default async function ProductPage({
             </dl>
           </Reveal>
           <Reveal delay={0.12} className="lg:pt-8">
-            <PriceBreakdown product={product} goldRate={goldRate} />
+            <PriceBreakdown product={product} goldRate={goldRate} silverRate={silverRate} />
           </Reveal>
         </div>
       </section>
@@ -161,7 +165,7 @@ export default async function ProductPage({
           <div className="mt-12 grid grid-cols-2 gap-x-5 gap-y-12 lg:grid-cols-3">
             {related.map((p, i) => (
               <Reveal key={p.slug} delay={i * 0.08}>
-                <ProductCard product={p} goldRate={goldRate} />
+                <ProductCard product={p} goldRate={goldRate} silverRate={silverRate} />
               </Reveal>
             ))}
           </div>

@@ -2,8 +2,8 @@ import { designSpecs, type DesignSpec } from "@/lib/specs";
 
 // ----- Rates (from the client price sheet) -----
 // Making charges (₹ per gram)
-const MAKING_GOLD = 1300;
-const MAKING_SILVER = 800;
+export const MAKING_GOLD = 1300;
+export const MAKING_SILVER = 800;
 
 // Lab-grown diamond rates, ₹ per carat (EF VS)
 const DIAMOND = {
@@ -25,9 +25,9 @@ const COLOURED: Record<string, number> = {
 // Default 24k rate when no live rate is supplied. lib/goldRate.ts resolves the
 // live/override rate on the server and passes it into the functions below.
 export const DEFAULT_GOLD_24K = 9700;
-export const SILVER_PER_GRAM = 95;
+export const DEFAULT_SILVER_PER_GRAM = 95;
 
-const PURITY = { "gold-18k": 0.75, "gold-14k": 0.585, "gold-9k": 0.375 } as const;
+export const PURITY = { "gold-18k": 0.75, "gold-14k": 0.585, "gold-9k": 0.375 } as const;
 
 export type PriceMetal = "gold-18k" | "gold-14k" | "gold-9k" | "silver-925";
 
@@ -51,10 +51,15 @@ export function metalWeight(s: DesignSpec, metal: PriceMetal) {
   return s.g9;
 }
 
-export function designPrice(s: DesignSpec, metal: PriceMetal, gold24k = DEFAULT_GOLD_24K) {
+export function designPrice(
+  s: DesignSpec,
+  metal: PriceMetal,
+  gold24k = DEFAULT_GOLD_24K,
+  silver = DEFAULT_SILVER_PER_GRAM
+) {
   const diamonds = diamondValue(s);
   if (metal === "silver-925") {
-    return round100(s.silver * (SILVER_PER_GRAM + MAKING_SILVER) + diamonds);
+    return round100(s.silver * (silver + MAKING_SILVER) + diamonds);
   }
   const weight = metalWeight(s, metal);
   return round100(weight * (gold24k * PURITY[metal] + MAKING_GOLD) + diamonds);
@@ -62,21 +67,30 @@ export function designPrice(s: DesignSpec, metal: PriceMetal, gold24k = DEFAULT_
 
 const ALL_METALS: PriceMetal[] = ["silver-925", "gold-9k", "gold-14k", "gold-18k"];
 
-export function priceRangeFor(slug: string, gold24k = DEFAULT_GOLD_24K): { from: number; to: number } | null {
+export function priceRangeFor(
+  slug: string,
+  gold24k = DEFAULT_GOLD_24K,
+  silver = DEFAULT_SILVER_PER_GRAM
+): { from: number; to: number } | null {
   const s = designSpecs[slug];
   if (!s) return null;
-  const prices = ALL_METALS.map((m) => designPrice(s, m, gold24k));
+  const prices = ALL_METALS.map((m) => designPrice(s, m, gold24k, silver));
   return { from: Math.min(...prices), to: Math.max(...prices) };
 }
 
-export function designBreakdown(slug: string, metal: PriceMetal = "gold-18k", gold24k = DEFAULT_GOLD_24K) {
+export function designBreakdown(
+  slug: string,
+  metal: PriceMetal = "gold-18k",
+  gold24k = DEFAULT_GOLD_24K,
+  silver = DEFAULT_SILVER_PER_GRAM
+) {
   const s = designSpecs[slug];
   if (!s) return null;
   const diamond = round100(diamondValue(s));
   if (metal === "silver-925") {
     return {
       weight: s.silver,
-      metal: round100(s.silver * SILVER_PER_GRAM),
+      metal: round100(s.silver * silver),
       making: round100(s.silver * MAKING_SILVER),
       diamond,
     };

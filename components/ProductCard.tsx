@@ -7,10 +7,12 @@ export function ProductCard({
   product,
   priority = false,
   goldRate,
+  silverRate,
 }: {
   product: Product;
   priority?: boolean;
   goldRate?: number;
+  silverRate?: number;
 }) {
   return (
     <Link href={`/jewellery/${product.slug}`} className="group block">
@@ -36,7 +38,7 @@ export function ProductCard({
           {product.name}
         </h3>
         <p className="mt-1 text-[0.72rem] uppercase tracking-[0.18em] text-mist">{product.style}</p>
-        <p className="mt-2 text-sm text-gold">From {formatPrice(productPriceRange(product, goldRate).from)}</p>
+        <p className="mt-2 text-sm text-gold">From {formatPrice(productPriceRange(product, goldRate, silverRate).from)}</p>
       </div>
     </Link>
   );

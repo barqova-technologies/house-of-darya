@@ -6,7 +6,7 @@ import { ProductCard } from "@/components/ProductCard";
 import { Reveal } from "@/components/Reveal";
 import { EditorialImage } from "@/components/EditorialImage";
 import { products } from "@/lib/products";
-import { getGoldRate } from "@/lib/goldRate";
+import { getGoldRate, getSilverRate } from "@/lib/goldRate";
 import { images } from "@/lib/images";
 import { site } from "@/lib/site";
 
@@ -43,6 +43,7 @@ const featured = ["florence", "sophia", "viola", "cascading-hoops"];
 
 export default async function HomePage() {
   const goldRate = await getGoldRate();
+  const silverRate = await getSilverRate();
   return (
     <>
       <HomeHero />
@@ -212,7 +213,7 @@ export default async function HomePage() {
             const product = products.find((p) => p.slug === slug)!;
             return (
               <Reveal key={slug} delay={i * 0.08}>
-                <ProductCard product={product} goldRate={goldRate} />
+                <ProductCard product={product} goldRate={goldRate} silverRate={silverRate} />
               </Reveal>
             );
           })}

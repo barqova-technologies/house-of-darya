@@ -2,9 +2,17 @@ import Image from "next/image";
 import { formatPrice, formatRange, productImage, productPriceRange, type Product } from "@/lib/products";
 import { designBreakdown } from "@/lib/pricing";
 
-export function PriceBreakdown({ product, goldRate }: { product: Product; goldRate?: number }) {
-  const range = productPriceRange(product, goldRate);
-  const bd = designBreakdown(product.slug, "gold-18k", goldRate);
+export function PriceBreakdown({
+  product,
+  goldRate,
+  silverRate,
+}: {
+  product: Product;
+  goldRate?: number;
+  silverRate?: number;
+}) {
+  const range = productPriceRange(product, goldRate, silverRate);
+  const bd = designBreakdown(product.slug, "gold-18k", goldRate, silverRate);
 
   const rows = bd
     ? [
