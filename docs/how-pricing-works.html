@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>How Pricing Works — House of Darya</title>
+  <meta name="description" content="How every price on the House of Darya website is calculated from the client price sheet.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500&display=swap">
+  <style>
+  :root {
+    --bg:      #faf6f0;
+    --surface: #ffffff;
+    --veil:    #f3ece2;
+    --ink:     #2b1a1d;
+    --mist:    #7d6d65;
+    --line:    #e3d8c9;
+    --rule:    #cbbba4;
+    --accent:  #361824;
+    --figure:  #7d5606;
+    --shadow:  rgba(43, 26, 29, 0.07);
+  }
+
+  :root:not([data-theme="light"]) {
+    color-scheme: light;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg:      #170f12;
+      --surface: #1f1519;
+      --veil:    #241920;
+      --ink:     #f2e9e0;
+      --mist:    #b09c93;
+      --line:    #3a2a30;
+      --rule:    #55404a;
+      --accent:  #e8b7c4;
+      --figure:  #d9a838;
+      --shadow:  rgba(0, 0, 0, 0.4);
+      color-scheme: dark;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --bg:      #170f12;
+    --surface: #1f1519;
+    --veil:    #241920;
+    --ink:     #f2e9e0;
+    --mist:    #b09c93;
+    --line:    #3a2a30;
+    --rule:    #55404a;
+    --accent:  #e8b7c4;
+    --figure:  #d9a838;
+    --shadow:  rgba(0, 0, 0, 0.4);
+    color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Jost", system-ui, -apple-system, sans-serif;
+    font-weight: 300;
+    font-size: 17px;
+    line-height: 1.75;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .sheet {
+    max-width: 60rem;
+    margin: 0 auto;
+    padding: clamp(2.5rem, 6vw, 5.5rem) clamp(1.15rem, 5vw, 3.5rem) 5rem;
+    display: flex;
+    flex-direction: column;
+    gap: clamp(2.75rem, 5vw, 4rem);
+  }
+
+  .prose { max-width: 40rem; }
+
+  .eyebrow {
+    font-size: 0.66rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.26em;
+    color: var(--accent);
+    margin: 0;
+  }
+
+  h1, h2, h3 {
+    font-family: "Cormorant Garamond", Georgia, serif;
+    font-weight: 500;
+    color: var(--ink);
+    text-wrap: balance;
+    margin: 0;
+  }
+
+  h1 { font-size: clamp(2.4rem, 6vw, 3.6rem); line-height: 1.06; letter-spacing: -0.01em; }
+  h2 { font-size: clamp(1.7rem, 3.4vw, 2.15rem); line-height: 1.2; }
+  h3 { font-size: 1.2rem; line-height: 1.35; font-weight: 600; }
+
+  p { margin: 0; }
+  strong { font-weight: 500; color: var(--ink); }
+
+  /* ---- masthead ---- */
+  header { display: flex; flex-direction: column; gap: 1.4rem; }
+  .standfirst {
+    font-family: "Cormorant Garamond", Georgia, serif;
+    font-size: clamp(1.2rem, 2.4vw, 1.5rem);
+    font-style: italic;
+    line-height: 1.5;
+    color: var(--mist);
+    max-width: 34rem;
+  }
+  .masthead-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.6rem;
+    padding-top: 1.4rem;
+    border-top: 1px solid var(--rule);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: var(--mist);
+  }
+
+  /* ---- sections ---- */
+  section { display: flex; flex-direction: column; gap: 1.5rem; }
+  .sec-head { display: flex; flex-direction: column; gap: 0.7rem; }
+  .sec-head::after {
+    content: "";
+    width: 3rem; height: 1px;
+    background: var(--rule);
+  }
+
+  .step-title { display: flex; align-items: baseline; gap: 0.85rem; }
+  .step-num {
+    font-family: "Cormorant Garamond", Georgia, serif;
+    font-style: italic;
+    font-size: 1.6rem;
+    color: var(--figure);
+    line-height: 1;
+  }
+
+  /* ---- formula ---- */
+  .formula {
+    background: var(--veil);
+    border-left: 2px solid var(--figure);
+    padding: 1.5rem 1.75rem;
+    font-family: "Cormorant Garamond", Georgia, serif;
+    font-size: clamp(1.3rem, 3vw, 1.75rem);
+    line-height: 1.45;
+    color: var(--ink);
+  }
+  .formula .op { color: var(--figure); padding: 0 0.2em; }
+  .formula small {
+    display: block;
+    margin-top: 0.6rem;
+    font-family: "Jost", sans-serif;
+    font-size: 0.78rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--mist);
+  }
+
+  .calc {
+    font-family: "Cormorant Garamond", Georgia, serif;
+    font-size: 1.15rem;
+    background: var(--veil);
+    padding: 0.9rem 1.15rem;
+    color: var(--ink);
+    overflow-x: auto;
+  }
+
+  /* ---- tables ---- */
+  .scroll { overflow-x: auto; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+    font-variant-numeric: tabular-nums;
+    min-width: 30rem;
+  }
+  caption {
+    text-align: left;
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--mist);
+    padding-bottom: 0.85rem;
+  }
+  th, td {
+    text-align: left;
+    padding: 0.72rem 1rem 0.72rem 0;
+    border-bottom: 1px solid var(--line);
+  }
+  thead th {
+    font-weight: 500;
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: var(--mist);
+    border-bottom-color: var(--rule);
+  }
+  td.num, th.num { text-align: right; padding-right: 0; }
+  tbody tr:last-child td { border-bottom: none; }
+  .total-row td {
+    border-top: 1px solid var(--rule);
+    border-bottom: none;
+    padding-top: 0.9rem;
+    font-weight: 500;
+  }
+  .total-row .amount {
+    font-family: "Cormorant Garamond", Georgia, serif;
+    font-size: 1.35rem;
+    color: var(--figure);
+  }
+
+  /* ---- break-up card ---- */
+  .breakup {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    box-shadow: 0 1px 3px var(--shadow);
+    padding: clamp(1.4rem, 3vw, 2rem);
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+    max-width: 34rem;
+  }
+  .breakup-head { display: flex; flex-direction: column; gap: 0.3rem; }
+  .breakup-head .ring {
+    font-family: "Cormorant Garamond", Georgia, serif;
+    font-size: 1.5rem;
+  }
+  .lines { display: flex; flex-direction: column; }
+  .line {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1.5rem;
+    padding: 0.7rem 0;
+    border-bottom: 1px solid var(--line);
+    font-size: 0.93rem;
+  }
+  .line span:last-child { font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .line .what { color: var(--ink); }
+  .line .how { display: block; font-size: 0.76rem; color: var(--mist); letter-spacing: 0.02em; }
+  .line.sum {
+    border-bottom: none;
+    border-top: 1px solid var(--rule);
+    margin-top: 0.35rem;
+    padding-top: 1rem;
+  }
+  .line.sum .what {
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--mist);
+  }
+  .line.sum .amount {
+    font-family: "Cormorant Garamond", Georgia, serif;
+    font-size: 1.9rem;
+    color: var(--figure);
+  }
+
+  /* ---- notes & panel ---- */
+  .note {
+    font-size: 0.88rem;
+    color: var(--mist);
+    max-width: 40rem;
+  }
+  .panel {
+    background: var(--veil);
+    border: 1px solid var(--rule);
+    padding: clamp(1.5rem, 3.5vw, 2.4rem);
+    display: flex;
+    flex-direction: column;
+    gap: 1.35rem;
+  }
+  .panel h2 { font-size: clamp(1.5rem, 3vw, 1.95rem); }
+  .panel .prose { max-width: 44rem; }
+  ol.asks {
+    margin: 0;
+    padding-left: 1.3rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+    max-width: 40rem;
+    font-size: 0.95rem;
+  }
+  ol.asks::marker { color: var(--figure); }
+  ol.asks li { padding-left: 0.3rem; }
+
+  .stack { display: flex; flex-direction: column; gap: 1.1rem; }
+
+  footer {
+    border-top: 1px solid var(--rule);
+    padding-top: 1.5rem;
+    font-size: 0.76rem;
+    letter-spacing: 0.04em;
+    color: var(--mist);
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  a { color: var(--accent); }
+  a:focus-visible, :focus-visible {
+    outline: 2px solid var(--figure);
+    outline-offset: 3px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation: none !important; transition: none !important; }
+  }
+</style>
+  <style>
+    @media print {
+      :root { --bg:#ffffff; --surface:#ffffff; --veil:#f6f2ec; --ink:#1d1215; --mist:#5f524c; --line:#ddd2c4; --rule:#b9a68f; --accent:#361824; --figure:#6b4a05; --shadow:transparent; }
+      body { background:#fff; font-size:11pt; }
+      .sheet { max-width:none; padding:0; gap:1.6rem; }
+      section, .panel, .breakup, .scroll { break-inside:avoid; }
+      h1,h2,h3 { break-after:avoid; }
+      .panel { border:1px solid var(--rule); }
+      a { text-decoration:none; }
+    }
+  </style>
+</head>
+<body>
+<div class="sheet">
+
+  <header>
+    <p class="eyebrow">Prepared for House of Darya</p>
+    <h1>How pricing works on the website</h1>
+    <p class="standfirst">Every price on the site is calculated from your price sheet — never typed in by hand, and never marked up on top.</p>
+    <div class="masthead-meta">
+      <span>Rates as at 25 August 2026</span>
+      <span>49 designs implemented</span>
+      <span>Prepared by Barqova</span>
+    </div>
+  </header>
+
+  <section>
+    <div class="sec-head">
+      <h2>The principle</h2>
+    </div>
+    <div class="formula">
+      Metal <span class="op">+</span> Making charge <span class="op">+</span> Stones
+      <small>Rounded to the nearest ₹100</small>
+    </div>
+    <p class="prose">Every price is built from three visible parts. Each is calculated from the weights and rates you supplied, so a customer can see exactly what they are paying for and why.</p>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <div class="step-title">
+        <span class="step-num">1</span>
+        <h2>Metal</h2>
+      </div>
+    </div>
+    <p class="prose">Metal value depends on the weight of that particular design and the purity of the metal chosen.</p>
+    <p class="calc">weight (grams) &times; 24K gold rate &times; purity</p>
+    <div class="scroll">
+      <table>
+        <caption>Purity by karat</caption>
+        <thead>
+          <tr><th scope="col">Metal</th><th scope="col" class="num">Purity</th><th scope="col" class="num">Gold content</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>18kt gold</td><td class="num">0.750</td><td class="num">75%</td></tr>
+          <tr><td>14kt gold</td><td class="num">0.585</td><td class="num">58.5%</td></tr>
+          <tr><td>9kt gold</td><td class="num">0.375</td><td class="num">37.5%</td></tr>
+          <tr><td>925 silver</td><td class="num">&mdash;</td><td class="num">priced per gram</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">Each design carries its own weight in each metal, exactly as given in your sheet. The Florence, for example, is 3.45 g in 18kt, 3.00 g in 14kt and 2.49 g in 9kt.</p>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <div class="step-title">
+        <span class="step-num">2</span>
+        <h2>Making charge</h2>
+      </div>
+    </div>
+    <div class="scroll">
+      <table>
+        <thead>
+          <tr><th scope="col">Metal</th><th scope="col" class="num">Per gram</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Gold</td><td class="num">₹1,300</td></tr>
+          <tr><td>Silver</td><td class="num">₹800</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">Charged on the same weight as the metal, so a heavier design costs more to make.</p>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <div class="step-title">
+        <span class="step-num">3</span>
+        <h2>Stones</h2>
+      </div>
+    </div>
+    <div class="scroll">
+      <table>
+        <caption>Lab-grown diamonds, EF VS</caption>
+        <thead>
+          <tr><th scope="col">Stone</th><th scope="col" class="num">₹ per carat</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Small round</td><td class="num">14,000</td></tr>
+          <tr><td>Small fancy cut</td><td class="num">18,000</td></tr>
+          <tr><td>Round solitaire</td><td class="num">22,000</td></tr>
+          <tr><td>Fancy solitaire</td><td class="num">26,000</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="scroll">
+      <table>
+        <caption>Coloured lab-grown diamonds</caption>
+        <thead>
+          <tr><th scope="col">Colour</th><th scope="col" class="num">₹ per carat</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Pink</td><td class="num">28,000</td></tr>
+          <tr><td>Red</td><td class="num">36,000</td></tr>
+          <tr><td>Yellow</td><td class="num">24,000</td></tr>
+          <tr><td>Green</td><td class="num">24,000</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="stack">
+      <h3>How coloured stones are applied</h3>
+      <p class="prose">Where a design has a coloured centre stone set with colourless accents, the coloured rate applies to the solitaire and the standard rate to the accents. We confirmed this against the photography for every affected design.</p>
+      <div class="scroll">
+        <table>
+          <thead>
+            <tr><th scope="col">Design</th><th scope="col">Centre stone</th><th scope="col">Accents</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Elina</td><td>Brownish-pink radiant</td><td>Colourless baguettes</td></tr>
+            <tr><td>Ascent</td><td>Fancy yellow cushion</td><td>Colourless baguettes &amp; pavé</td></tr>
+            <tr><td>Soleil</td><td>Fancy yellow cushion</td><td>Colourless trapezoids &amp; pavé</td></tr>
+            <tr><td>The Grove</td><td>Green radiant</td><td>Colourless marquise &amp; rounds</td></tr>
+            <tr><td>Tara</td><td>No solitaire</td><td>Pink throughout</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="note">Tara is the only piece set entirely with coloured stones, so it is the only one where the coloured rate is applied across every stone.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <h2>A worked example</h2>
+      <p class="note">The Florence, in 18kt gold.</p>
+    </div>
+    <div class="breakup">
+      <div class="breakup-head">
+        <p class="eyebrow">Price break-up</p>
+        <span class="ring">Florence</span>
+      </div>
+      <div class="lines">
+        <div class="line">
+          <span class="what">Metal <span class="how">3.45 g × ₹16,400 × 0.75</span></span>
+          <span>₹42,400</span>
+        </div>
+        <div class="line">
+          <span class="what">Making charge <span class="how">3.45 g × ₹1,300</span></span>
+          <span>₹4,500</span>
+        </div>
+        <div class="line">
+          <span class="what">Diamonds <span class="how">0.4 ct fancy + 1.5 ct fancy solitaire</span></span>
+          <span>₹46,200</span>
+        </div>
+        <div class="line sum">
+          <span class="what">Total</span>
+          <span class="amount">₹93,100</span>
+        </div>
+      </div>
+    </div>
+    <p class="note">This break-up is shown to the customer on the page itself, with the weight beside each line. Nothing is hidden.</p>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <h2>The same ring in every metal</h2>
+    </div>
+    <div class="scroll">
+      <table>
+        <thead>
+          <tr>
+            <th scope="col">Metal</th>
+            <th scope="col" class="num">Weight</th>
+            <th scope="col" class="num">Metal</th>
+            <th scope="col" class="num">Making</th>
+            <th scope="col" class="num">Stones</th>
+            <th scope="col" class="num">Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>18kt gold</td><td class="num">3.45 g</td><td class="num">₹42,400</td><td class="num">₹4,500</td><td class="num">₹46,200</td><td class="num"><strong>₹93,100</strong></td></tr>
+          <tr><td>14kt gold</td><td class="num">3.00 g</td><td class="num">₹28,800</td><td class="num">₹3,900</td><td class="num">₹46,200</td><td class="num"><strong>₹78,900</strong></td></tr>
+          <tr><td>9kt gold</td><td class="num">2.49 g</td><td class="num">₹15,300</td><td class="num">₹3,200</td><td class="num">₹46,200</td><td class="num"><strong>₹64,800</strong></td></tr>
+          <tr><td>925 silver</td><td class="num">3.00 g</td><td class="num">₹800</td><td class="num">₹2,400</td><td class="num">₹46,200</td><td class="num"><strong>₹49,400</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="prose">Two things move together: a lower karat holds less gold <em>and</em> the design is made lighter, so the drop is steeper than purity alone would suggest. The stones stay ₹46,200 throughout — which is why silver does not fall as far as the metal saving implies.</p>
+    <p class="note">Each product page shows this as a range, from the lowest metal to the highest.</p>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <h2>How carat changes the price</h2>
+      <p class="note">Setting held constant at 3 g in 18kt gold.</p>
+    </div>
+    <div class="scroll">
+      <table>
+        <thead>
+          <tr>
+            <th scope="col">Centre stone</th>
+            <th scope="col" class="num">Stone</th>
+            <th scope="col" class="num">Metal + making</th>
+            <th scope="col" class="num">Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>0.50 ct</td><td class="num">₹9,000</td><td class="num">₹40,800</td><td class="num"><strong>₹49,800</strong></td></tr>
+          <tr><td>0.70 ct</td><td class="num">₹12,600</td><td class="num">₹40,800</td><td class="num"><strong>₹53,400</strong></td></tr>
+          <tr><td>1.00 ct</td><td class="num">₹18,000</td><td class="num">₹40,800</td><td class="num"><strong>₹58,800</strong></td></tr>
+          <tr><td>1.50 ct</td><td class="num">₹27,000</td><td class="num">₹40,800</td><td class="num"><strong>₹67,800</strong></td></tr>
+          <tr><td>2.00 ct</td><td class="num">₹36,000</td><td class="num">₹40,800</td><td class="num"><strong>₹76,800</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="prose">Doubling the carat doubles the stone cost, not the price of the ring — the metal and making stay where they are.</p>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <h2>Catalogue designs and custom designs</h2>
+    </div>
+    <p class="prose"><strong>Catalogue designs</strong> use their exact weight from your sheet, per metal.</p>
+    <p class="prose"><strong>The online customizer</strong> uses an indicative 3 g setting weight, because a piece designed from scratch has no weight until it is specified. This is stated on screen, and the final weight is confirmed at consultation.</p>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <h2>Fixed and indicative</h2>
+    </div>
+    <p class="prose"><strong>Fixed</strong> — making charges, purity, and the per-carat stone rates. All taken directly from your sheet.</p>
+    <p class="prose"><strong>Indicative</strong> — the total. It moves with the daily metal rate, and the final stone is chosen and confirmed at consultation. Every price on the site is labelled accordingly.</p>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <h2>Keeping rates current</h2>
+    </div>
+    <p class="prose">The 24K gold rate and the silver rate are the only two numbers that need maintaining. Update them in one place and every price across the site recalculates — catalogue and customizer together. Everything else stays fixed until your price sheet changes.</p>
+  </section>
+
+  <div class="panel">
+    <p class="eyebrow">Needs a decision</p>
+    <h2>Natural diamonds are not priced online</h2>
+    <div class="stack">
+      <p class="prose">We have hidden natural diamonds from the online customizer for now, and we would like to agree the right approach with you before switching them on.</p>
+      <p class="prose">The reason is straightforward. Your price sheet provides rates for lab-grown and coloured lab-grown diamonds, which is what the site now uses. It does not include a rate card for natural stones. In the earlier build, the natural price was produced by applying a fixed multiple to the lab-grown rate — that gave a number, but not one either of us could stand behind in front of a customer.</p>
+      <p class="prose">Natural diamond pricing also does not behave like lab-grown. Price per carat steps up sharply at the 0.30, 0.50, 1.00 and 1.50 carat thresholds, and varies considerably with shape, colour, clarity and cut. A single per-carat figure, however carefully chosen, will overstate small stones and understate large ones.</p>
+      <p class="prose">Rather than publish a figure we cannot justify, we have taken it off the customizer. <strong>Natural diamonds remain fully available</strong> and are quoted at consultation against the actual stone, which is the only accurate way to price them.</p>
+      <h3>To bring natural diamonds online, we would need</h3>
+      <ol class="asks">
+        <li>Your natural diamond rate card, or the basis you price against — your supplier's list, or your own.</li>
+        <li>A decision on structure: whether to price in carat bands, for example 0.30–0.49, 0.50–0.99 and 1.00–1.49, rather than one flat per-carat rate.</li>
+        <li>Whether colour and clarity grades should carry separate rates, as they realistically do.</li>
+      </ol>
+      <p class="prose">Once we have those, adding natural diamonds to the customizer is a small change. We would rather spend a short conversation getting it right than show a price that has to be corrected at consultation.</p>
+    </div>
+  </div>
+
+  <footer>
+    <span>Worked examples use a 24K gold rate of ₹16,400 per gram and a silver rate of ₹260 per gram, the market rates on 25 August 2026.</span>
+    <span>All stone rates, making charges and design weights are taken from the House of Darya price sheet.</span>
+  </footer>
+
+</div>
+
+</body>
+</html>

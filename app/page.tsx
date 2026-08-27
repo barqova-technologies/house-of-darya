@@ -5,6 +5,7 @@ import { SectionHeading } from "@/components/SectionHeading";
 import { ProductCard } from "@/components/ProductCard";
 import { Reveal } from "@/components/Reveal";
 import { EditorialImage } from "@/components/EditorialImage";
+import { Testimonials } from "@/components/Testimonials";
 import { products } from "@/lib/products";
 import { getGoldRate, getSilverRate } from "@/lib/goldRate";
 import { images } from "@/lib/images";
@@ -224,6 +225,8 @@ export default async function HomePage() {
           </Link>
         </div>
       </section>
+
+      <Testimonials />
 
       <section className="bg-night">
         <div className="shell py-24 text-center lg:py-32">
