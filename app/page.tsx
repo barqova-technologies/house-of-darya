@@ -18,21 +18,6 @@ const pillars = [
   { title: "It begins with a conversation.", note: "Not mindless recommendation." },
 ];
 
-const transparency = [
-  {
-    title: "Every stone, certified",
-    text: "Natural or lab-grown, each diamond arrives with its own IGI certificate. You see the grading before it is set.",
-  },
-  {
-    title: "Itemised pricing",
-    text: "Stone, metal and making charge are shown separately, so you know exactly what you are paying for and why.",
-  },
-  {
-    title: "Nothing hidden",
-    text: "No inflated MRPs, no showroom mark-up, no pressure. The price you are quoted is the price you pay.",
-  },
-];
-
 const atelierPoints = [
   "Try 9,000+ designs in the comfort of your home",
   "Compare, swap and try stone shapes & sizes to suit your style",
@@ -150,25 +135,9 @@ export default async function HomePage() {
             className="order-1 lg:order-2"
           />
         </div>
-
-        <div className="shell">
-          <Reveal className="mt-20 border-t border-line pt-14">
-            <p className="label text-gold">Crafted with complete transparency</p>
-            <h3 className="display mt-4 max-w-2xl text-2xl text-ink sm:text-3xl">
-              Transparency, and exactly what we mean by it
-            </h3>
-            <div className="mt-10 grid gap-8 sm:grid-cols-3">
-              {transparency.map((item) => (
-                <div key={item.title}>
-                  <span className="block h-px w-10 bg-gold" />
-                  <h4 className="display mt-5 text-lg text-ink">{item.title}</h4>
-                  <p className="mt-2 text-sm leading-6 text-mist">{item.text}</p>
-                </div>
-              ))}
-            </div>
-          </Reveal>
-        </div>
       </section>
+
+      <Testimonials />
 
       <section className="bg-night">
         <div className="shell py-24 lg:py-32">
@@ -225,8 +194,6 @@ export default async function HomePage() {
           </Link>
         </div>
       </section>
-
-      <Testimonials />
 
       <section className="bg-night">
         <div className="shell py-24 text-center lg:py-32">
