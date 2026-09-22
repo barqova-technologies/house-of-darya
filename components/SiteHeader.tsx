@@ -39,11 +39,13 @@ export function SiteHeader() {
     };
   }, [open]);
 
+  const overlay = pathname === "/" && !scrolled && !open;
+
   return (
     <header
-      className={`fixed inset-x-0 top-0 z-50 bg-canvas/95 backdrop-blur-md transition-all duration-500 ${
-        scrolled || open ? "border-b border-line" : "border-b border-transparent"
-      }`}
+      className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${
+        overlay ? "bg-transparent" : "bg-canvas/95 backdrop-blur-md"
+      } ${scrolled || open ? "border-b border-line" : "border-b border-transparent"}`}
     >
       <div className="shell grid h-20 grid-cols-[1fr_auto_1fr] items-center gap-4">
         <nav className="hidden items-center gap-8 lg:flex">
@@ -51,8 +53,14 @@ export function SiteHeader() {
             <Link
               key={item.href}
               href={item.href}
-              className={`text-[0.7rem] font-medium uppercase tracking-[0.22em] transition-colors duration-300 hover:text-gold ${
-                isNavItemActive(pathname, item.href) ? "text-gold" : "text-ink"
+              className={`text-[0.7rem] font-medium uppercase tracking-[0.22em] transition-colors duration-300 ${
+                overlay
+                  ? isNavItemActive(pathname, item.href)
+                    ? "text-champagne"
+                    : "text-white hover:text-champagne"
+                  : isNavItemActive(pathname, item.href)
+                    ? "text-gold"
+                    : "text-ink hover:text-gold"
               }`}
             >
               {item.label}
@@ -66,22 +74,31 @@ export function SiteHeader() {
           className="flex h-9 w-9 flex-col items-center justify-center gap-1.5 justify-self-start lg:hidden"
         >
           <span
-            className={`h-px w-6 bg-ink transition-all duration-300 ${open ? "translate-y-[3.5px] rotate-45" : ""}`}
+            className={`h-px w-6 transition-all duration-300 ${overlay ? "bg-white" : "bg-ink"} ${open ? "translate-y-[3.5px] rotate-45" : ""}`}
           />
           <span
-            className={`h-px w-6 bg-ink transition-all duration-300 ${open ? "-translate-y-[3.5px] -rotate-45" : ""}`}
+            className={`h-px w-6 transition-all duration-300 ${overlay ? "bg-white" : "bg-ink"} ${open ? "-translate-y-[3.5px] -rotate-45" : ""}`}
           />
         </button>
 
         <Logo className="h-12 w-auto justify-self-center sm:h-14" />
 
         <div className="hidden flex-col items-end justify-self-end lg:flex">
-          <Link href="/home-atelier#book" className="btn-gold !px-6 !py-3">
+          <Link
+            href="/home-atelier#book"
+            className={
+              overlay
+                ? "btn bg-canvas !px-6 !py-3 text-night hover:bg-white"
+                : "btn-gold !px-6 !py-3"
+            }
+          >
             Book Home Atelier
           </Link>
           <Link
             href="/home-atelier"
-            className="mt-1.5 text-[0.56rem] uppercase tracking-[0.2em] text-mist transition-colors hover:text-gold"
+            className={`mt-1.5 text-[0.56rem] uppercase tracking-[0.2em] transition-colors ${
+              overlay ? "text-white/70 hover:text-champagne" : "text-mist hover:text-gold"
+            }`}
           >
             What is Home Atelier?
           </Link>

@@ -9,85 +9,96 @@ const ease = [0.21, 0.6, 0.35, 1] as const;
 
 export function HomeHero() {
   return (
-    <section className="relative min-h-svh overflow-hidden">
+    <section className="relative min-h-svh overflow-hidden bg-night">
       <motion.div
-        initial={{ opacity: 0, scale: 1.06 }}
+        initial={{ opacity: 0, scale: 1.08 }}
         animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 1.8, ease }}
-        className="absolute inset-0"
+        transition={{ duration: 2, ease }}
+        className="absolute inset-x-0 top-0 h-[78%] lg:inset-0 lg:h-full lg:w-[125%]"
       >
         <Image
           src={images.heroPrimary}
           alt="Made-to-order House of Darya rings, worn"
           fill
           priority
-          sizes="100vw"
-          className="object-cover object-[70%_center]"
+          sizes="(max-width: 1024px) 100vw, 125vw"
+          className="object-cover object-center"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-canvas from-30% via-canvas/95 via-65% to-canvas/50 to-100% lg:from-canvas lg:from-15% lg:via-canvas/55 lg:via-50% lg:to-transparent lg:to-80%" />
-        <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-canvas/90 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-night via-night/75 via-42% to-transparent to-72% lg:hidden" />
       </motion.div>
 
-      <div className="shell relative z-10 flex min-h-svh flex-col justify-center pb-24 pt-32">
-        <div className="max-w-xl">
+      <div className="absolute inset-0 hidden bg-gradient-to-r from-night from-8% via-night/85 via-44% to-transparent to-72% lg:block" />
+      <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-night/60 to-transparent" />
+
+      <div className="shell relative z-10 flex min-h-svh flex-col justify-end pb-14 pt-32 sm:pb-20 lg:justify-center lg:pb-24">
+        <div className="max-w-md sm:max-w-xl lg:max-w-2xl">
           <motion.p
             initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.1, ease }}
-            className="label text-gold"
+            transition={{ duration: 0.8, delay: 0.3, ease }}
+            className="label text-white/60"
           >
             Made-to-Order Fine Jewellery
           </motion.p>
+
           <motion.h1
-            initial={{ opacity: 0, y: 24 }}
+            initial={{ opacity: 0, y: 26 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.25, ease }}
-            className="display mt-6 text-[2.6rem] leading-[1.08] text-ink sm:text-6xl lg:text-[4.2rem]"
+            transition={{ duration: 1.1, delay: 0.45, ease }}
+            className="display mt-5 text-[2.6rem] leading-[1.05] text-canvas sm:text-[3.4rem] lg:text-[4.2rem]"
           >
-            Jewellery that begins <em className="font-display italic text-gold">with you</em>
+            Jewellery that begins
+            <em className="mt-1 block font-display italic text-champagne">with you</em>
           </motion.h1>
+
+          <motion.span
+            initial={{ scaleX: 0 }}
+            animate={{ scaleX: 1 }}
+            transition={{ duration: 0.9, delay: 0.75, ease }}
+            className="mt-7 hidden h-px w-16 origin-left bg-champagne/50 sm:block"
+          />
+
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.9, delay: 0.45, ease }}
-            className="mt-7 max-w-md"
+            transition={{ duration: 0.9, delay: 0.7, ease }}
+            className="mt-6 max-w-sm text-[0.98rem] leading-7 text-white/70"
           >
-            <span className="block text-[1.05rem] font-medium leading-7 text-ink">
-              Some jewellery is made to be sold. Ours is made to be yours.
-            </span>
-            <span className="mt-4 block text-[0.95rem] leading-7 text-ink/70">
-              Discover thoughtfully designed signature collections or commission a piece through our
-              Home Atelier. Every House of Darya creation is personalised with intention, crafted
-              with complete transparency, and made to become part of your story.
-            </span>
+            Some jewellery is made to be sold. Ours is made to be yours.
           </motion.p>
+
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.9, delay: 0.6, ease }}
-            className="mt-10 flex flex-col gap-4 sm:flex-row"
+            transition={{ duration: 0.9, delay: 0.9, ease }}
+            className="mt-9 flex flex-col gap-3 sm:flex-row sm:gap-4"
           >
-            <Link href="/home-atelier" className="btn-gold">
+            <Link href="/home-atelier#book" className="btn bg-canvas text-night hover:bg-white">
               Book Home Atelier
             </Link>
-            <Link href="/collections" className="btn-line bg-canvas/40 backdrop-blur-sm">
+            <Link
+              href="/collections"
+              className="btn border border-white/40 text-white transition-colors hover:border-white"
+            >
               Explore Collections
             </Link>
           </motion.div>
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1, delay: 0.85 }}
-            className="mt-12 flex flex-wrap gap-x-7 gap-y-2"
-          >
-            {["HUID Hallmarked", "IGI Certified Diamonds"].map((mark) => (
-              <span key={mark} className="text-[0.62rem] uppercase tracking-[0.22em] text-ink/60">
-                {mark}
-              </span>
-            ))}
-          </motion.div>
         </div>
       </div>
+
+      <motion.span
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1, delay: 1.3 }}
+        aria-hidden="true"
+        className="absolute bottom-10 right-12 z-10 hidden h-14 w-px overflow-hidden bg-white/20 lg:block"
+      >
+        <motion.span
+          animate={{ y: ["-100%", "100%"] }}
+          transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
+          className="block h-full w-px bg-champagne"
+        />
+      </motion.span>
     </section>
   );
 }

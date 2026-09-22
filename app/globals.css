@@ -11,6 +11,7 @@
   --gold-soft: #5c2f3f;
   --gold-deep: #24101a;
   --night: #361824;
+  --champagne: #d8b071;
 }
 
 @theme inline {
@@ -24,6 +25,7 @@
   --color-gold-soft: var(--gold-soft);
   --color-gold-deep: var(--gold-deep);
   --color-night: var(--night);
+  --color-champagne: var(--champagne);
   --font-display: var(--font-cormorant), Georgia, serif;
   --font-body: var(--font-jost), system-ui, sans-serif;
 }
